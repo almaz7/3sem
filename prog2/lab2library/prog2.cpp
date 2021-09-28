@@ -7,7 +7,7 @@ double Hypo::get_x() const {
 }
 
 double Hypo::get_y() const {
-    return (R - r) * sin(t) - d * sin(t * (R - r) / r); //R-r
+    return (R - r) * sin(t) - d * sin(t * (R - r) / r);
 }
 
 int Hypo::get_type() const {
