@@ -3,6 +3,7 @@
 
 int main() {
     int c;
+    double t;
     Hypo h;
     do {
         std::cout << "0. Exit" << std::endl;
@@ -22,17 +23,19 @@ int main() {
 
             case 1:
                 std::cout << "***Create hypocycloid***" << std::endl;
-                create_hypocycloid(h);
+                if (create_hypocycloid(h) == 1) return 1;
                 break;
 
             case 2:
                 std::cout << "***Change parameters of hypocycloid***" << std::endl;
-                change_parameters(h);
+                if (change_parameters(h) == 1) return 1;
                 break;
 
             case 3:
                 std::cout << "***Get coordinates of hypocycloid point***" << std::endl;
-                print_x_y(h);
+                std::cout << "Enter beam angle in radians:" << std::endl;
+                t = get_double();
+                print_x_y(h,t);
                 break;
 
             case 4:
@@ -42,7 +45,9 @@ int main() {
 
             case 5:
                 std::cout << "***Get radius of curvature***" << std::endl;
-                print_rad_curv(h);
+                std::cout << "Enter beam angle in radians:" << std::endl;
+                t = get_double();
+                print_rad_curv(h,t);
                 break;
 
             case 6:
@@ -52,7 +57,9 @@ int main() {
 
             case 7:
                 std::cout << "***Get sectorial square***" << std::endl;
-                print_square(h);
+                std::cout << "Enter beam angle in radians:" << std::endl;
+                t = get_double();
+                print_square(h,t);
                 break;
 
             default:

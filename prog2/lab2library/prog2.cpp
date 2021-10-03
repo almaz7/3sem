@@ -1,12 +1,20 @@
 #include <iostream>
 #include <cmath>
 #include "prog2.h"
+void Hypo::check() const {
+    if (r <= 0)
+        throw "Radius r couldn't be <= 0";
+    if (R <= 0)
+        throw "Radius R couldn't be <= 0";
+    if (d < 0)
+        throw "Distance d couldn't be < 0";
+}
 
-double Hypo::get_x() const {
+double Hypo::get_x(double t) const {
     return (R - r) * cos(t) + d * cos(t * (R - r) / r);
 }
 
-double Hypo::get_y() const {
+double Hypo::get_y(double t) const {
     return (R - r) * sin(t) - d * sin(t * (R - r) / r);
 }
 
@@ -20,16 +28,16 @@ int Hypo::get_type() const {
     } else return 2; //error
 }
 
-double Hypo::get_rad_curv() const {
+double Hypo::get_rad_curv(double t) const {
     return fabs((R - r) * pow(r*r + d*d - 2*d*r*cos(R*t/r), 1.5) /
     fabs(-r*r*r + d*d*(R-r) - d*r*(R - 2*r)*cos(R*t/r)));
 }
 
-double Hypo::get_square() const {
+double Hypo::get_square(double t) const {
     return fabs((R - r) / 2 * ((R - r - d*d/r)*t + d*(R - 2*r)/R*sin(R*t/r)));
 }
 
-void print_type(Hypo &h) {
+void print_type(Hypo &h) noexcept {
     int s = h.get_type();
     if (s == 2) std::cout << "Error!!!" << std::endl;
     if (s == -1) std::cout << "Type of hypocycloid: \"shortened\"" << std::endl; //укороченная
@@ -37,26 +45,26 @@ void print_type(Hypo &h) {
     if (s == 1) std::cout << "Type of hypocycloid: \"elongate\"" << std::endl; //удлинненная
 }
 
-void print_x_y(Hypo &h) {
+void print_x_y(Hypo &h, double t) noexcept {
     double x, y;
-    x = h.get_x();
-    y = h.get_y();
+    x = h.get_x(t);
+    y = h.get_y(t);
     std::cout << "Coordinates:" << std::endl;
     std::cout << "X: " << x << std::endl;
     std::cout << "Y: " << y << std::endl;
 }
 
-void print_rad_curv(Hypo &h) {
-    double rad = h.get_rad_curv();
+void print_rad_curv(Hypo &h, double t) noexcept {
+    double rad = h.get_rad_curv(t);
     std::cout << "Radius of curvature: " << rad << std::endl; //радиус кривизны
 }
 
-void print_square(Hypo &h) {
-    double s = h.get_square();
+void print_square(Hypo &h, double t) noexcept {
+    double s = h.get_square(t);
     std::cout << "Sectorial square: " << s << std::endl; //секториальная площадь
 }
 
-void print_r_R(Hypo &h) {
+void print_r_R(Hypo &h) noexcept {
     double r = h.get_r();
     double R = h.get_R();
     std::cout << "Circle radii:" << std::endl;
@@ -64,7 +72,7 @@ void print_r_R(Hypo &h) {
     std::cout << "R: " << R << std::endl;
 }
 
-bool correct_get_int(int &a) {
+bool correct_get_int(int &a) noexcept {
     std::cin >> a;
     if (!std::cin.good()) {
         std::cin.clear();
@@ -74,7 +82,7 @@ bool correct_get_int(int &a) {
     return true;
 }
 
-int get_int() {
+int get_int() noexcept {
     int num;
     while (true) {
         if (correct_get_int(num))
@@ -84,7 +92,7 @@ int get_int() {
     return num;
 }
 
-bool correct_get_double(double &a) {
+bool correct_get_double(double &a) noexcept {
     std::cin >> a;
     if (!std::cin.good()) {
         std::cin.clear();
@@ -94,7 +102,7 @@ bool correct_get_double(double &a) {
     return true;
 }
 
-double get_double() {
+double get_double() noexcept {
     double num;
     while (true) {
         if (correct_get_double(num))
@@ -105,48 +113,48 @@ double get_double() {
 }
 
 int create_hypocycloid(Hypo &h) {
-    double r, R, t, d;
-    const char *s = "";
+    double r, R, d;
+
     std::cout << "Enter radius of generating circle (r > 0)" << std::endl;
-    do {
-        std::cout << s << std::endl;
-        r = get_double();
-        s = "You are wrong! Try again";
-    } while (r <= 0);
-    s = "";
+    r = get_double();
 
     std::cout << "Enter radius of guide circle (R > 0)" << std::endl;
-    do {
-        std::cout << s << std::endl;
-        R = get_double();
-        s = "You are wrong! Try again";
-    } while (R <= 0);
-    s = "";
+    R = get_double();
 
     std::cout << "Enter distance from point on hypocycloid to centre of generating circle (d >= 0)" << std::endl;
-    do {
-        std::cout << s << std::endl;
-        d = get_double();
-        s = "You are wrong! Try again";
-    } while (d < 0);
+    d = get_double();
 
-    std::cout << "Enter beam angle" << std::endl;
-    t = get_double();
+    try {
+        h.set_r(r);
+    } catch (const char *msg) {
+        std::cerr << msg << std::endl;
+        return 1;
+    }
 
-    h.set_r(r); h.set_R(R); h.set_d(d); h.set_t(t);
+    try {
+        h.set_R(R);
+    } catch (const char *msg2) {
+        std::cerr << msg2 << std::endl;
+        return 1;
+    }
+
+    try {
+        h.set_d(d);
+    } catch (const char *msg3) {
+        std::cerr << msg3 << std::endl;
+        return 1;
+    }
     return 0;
 }
 
 int change_parameters(Hypo &h) {
     int c;
-    double r, t, d, R;
-    const char *s = "";
+    double r, d, R;
     do {
         std::cout << "0. Exit" << std::endl;
         std::cout << "1. Change r" << std::endl;
         std::cout << "2. Change R" << std::endl;
         std::cout << "3. Change d (distance)" << std::endl;
-        std::cout << "4. Change t (angle)" << std::endl;
         c = get_int();
         switch (c) {
             case 0:
@@ -156,44 +164,37 @@ int change_parameters(Hypo &h) {
             case 1:
                 std::cout << "***Change r***" << std::endl;
                 std::cout << "Enter radius of generating circle (r > 0)" << std::endl;
-                do {
-                    std::cout << s << std::endl;
-                    r = get_double();
-                    s = "You are wrong! Try again";
-                } while (r <= 0);
-                s = "";
-                h.set_r(r);
+                r = get_double();
+                try {
+                    h.set_r(r);
+                } catch (const char *msg) {
+                    std::cerr << msg << std::endl;
+                    return 1;
+                }
                 break;
 
             case 2:
                 std::cout << "***Change R***" << std::endl;
                 std::cout << "Enter radius of guide circle (R > 0)" << std::endl;
-                do {
-                    std::cout << s << std::endl;
-                    R = get_double();
-                    s = "You are wrong! Try again";
-                } while (R <= 0);
-                s = "";
-                h.set_R(R);
+                R = get_double();
+                try {
+                    h.set_R(R);
+                } catch (const char *msg) {
+                    std::cerr << msg << std::endl;
+                    return 1;
+                }
                 break;
 
             case 3:
                 std::cout << "***Change d (distance)***" << std::endl;
                 std::cout << "Enter distance from point on hypocycloid to centre of generating circle (d >= 0)" << std::endl;
-                do {
-                    std::cout << s << std::endl;
-                    d = get_double();
-                    s = "You are wrong! Try again";
-                } while (d < 0);
-                s = "";
-                h.set_d(d);
-                break;
-
-            case 4:
-                std::cout << "***Change t (angle)***" << std::endl;
-                std::cout << "Enter beam angle" << std::endl;
-                t = get_double();
-                h.set_t(t);
+                d = get_double();
+                try {
+                    h.set_d(d);
+                } catch (const char *msg) {
+                    std::cerr << msg << std::endl;
+                    return 1;
+                }
                 break;
 
             default:
