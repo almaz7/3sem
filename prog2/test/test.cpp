@@ -9,7 +9,7 @@ TEST(Hypo, Positive) {
     EXPECT_NEAR(h.get_square(3.14), 18.8496, 0.01);
     EXPECT_NEAR(h.get_rad_curv(3.14), 5.33329, 0.01);
     EXPECT_NEAR(h.get_r(),1, 0.01);
-    EXPECT_EQ(h.get_type(),0);
+    EXPECT_EQ(h.get_type(), USUAL);
     EXPECT_NEAR(h.get_R(), 5, 0.01);
 }
 
@@ -21,7 +21,7 @@ TEST(Hypo2, Positive) {
     EXPECT_NEAR(h.get_square(1), 0.5, 0.01);
     EXPECT_NEAR(h.get_rad_curv(1), 1, 0.01);
     EXPECT_NEAR(h.get_r(),2, 0.01);
-    EXPECT_EQ(h.get_type(),-1);
+    EXPECT_EQ(h.get_type(),SHORTENED);
     EXPECT_NEAR(h.get_R(), 3, 0.01);
 }
 
@@ -33,7 +33,7 @@ TEST(Hypo3, Positive) {
     EXPECT_NEAR(h.get_square(2), 19.341, 0.01);
     EXPECT_NEAR(h.get_rad_curv(2), 3.34366, 0.01);
     EXPECT_NEAR(h.get_r(),5.5, 0.01);
-    EXPECT_EQ(h.get_type(), 1);
+    EXPECT_EQ(h.get_type(), ELONGATE);
     EXPECT_NEAR(h.get_R(), 15.6, 0.01);
 }
 

@@ -1,6 +1,12 @@
 #ifndef PROG2_H
 #define PROG2_H
 //гипоциклоида
+enum HYPO_TYPES {
+    ELONGATE,
+    SHORTENED,
+    USUAL,
+    ERROR
+};
 class Hypo {
     private:
         double r; //радиус порождающего (внутреннего) круга
@@ -33,7 +39,7 @@ class Hypo {
 
         double get_x(double t) const; //координаты х и у
         double get_y(double t) const;
-        int get_type() const; //тип гипоциклоиды
+        HYPO_TYPES get_type() const; //тип гипоциклоиды
         double get_rad_curv(double t) const; //радиус кривизны
         double get_square(double t) const; //секториальная площадь
 };

@@ -18,14 +18,14 @@ double Hypo::get_y(double t) const {
     return (R - r) * sin(t) - d * sin(t * (R - r) / r);
 }
 
-int Hypo::get_type() const {
+HYPO_TYPES Hypo::get_type() const {
     if (fabs(d - r) < (d / 100000)) { //то есть d == r
-        return 0;       //обыкновенная
+        return USUAL;
     } else if ((r - d) > (r / 100000)) {
-        return -1;      //укороченная
+        return SHORTENED;
     } else if ((d - r) > (d / 100000)) {
-        return 1;
-    } else return 2; //error
+        return ELONGATE;
+    } else return ERROR;
 }
 
 double Hypo::get_rad_curv(double t) const {
@@ -38,11 +38,11 @@ double Hypo::get_square(double t) const {
 }
 
 void print_type(Hypo &h) noexcept {
-    int s = h.get_type();
-    if (s == 2) std::cout << "Error!!!" << std::endl;
-    if (s == -1) std::cout << "Type of hypocycloid: \"shortened\"" << std::endl; //укороченная
-    if (s == 0) std::cout << "Type of hypocycloid: \"usual\"" << std::endl; //обыкновенная
-    if (s == 1) std::cout << "Type of hypocycloid: \"elongate\"" << std::endl; //удлинненная
+    HYPO_TYPES s = h.get_type();
+    if (s == ERROR) std::cout << "Error!!!" << std::endl;
+    if (s == SHORTENED) std::cout << "Type of hypocycloid: \"shortened\"" << std::endl; //укороченная
+    if (s == USUAL) std::cout << "Type of hypocycloid: \"usual\"" << std::endl; //обыкновенная
+    if (s == ELONGATE) std::cout << "Type of hypocycloid: \"elongate\"" << std::endl; //удлинненная
 }
 
 void print_x_y(Hypo &h, double t) noexcept {
