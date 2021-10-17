@@ -3,12 +3,14 @@
 using namespace STATIC;
 int main() {
     int c, key;
-    char str[LENGTH];
+    Item item1;
+    unsigned int length = item1.LENGTH;
+    char* str = new char[length];
     Table *t = nullptr;
     do {
         std::cout << "0. Exit" << std::endl;
         std::cout << "1. Create default table" << std::endl;
-        std::cout << "2. Create table and initialize n elements" << std::endl;
+        std::cout << "2. Create table and initialize k elements" << std::endl;
         std::cout << "3. Find element by key" << std::endl;
         std::cout << "4. Add new element" << std::endl;
         std::cout << "5. Delete element by key" << std::endl;
@@ -24,26 +26,19 @@ int main() {
             case 1:
                 std::cout << "***Create default table***" << std::endl;
                 delete t;
-                try {
-                    t = new Table;
-                } catch (const char *msg) {
-                    std::cerr << msg << std::endl;
-                    break;
-                }
+                t = new Table;
                 break;
 
             case 2:
-                std::cout << "***Create table and initialize n elements***" << std::endl;
-                int n;
+                std::cout << "***Create table and initialize k elements***" << std::endl;
+                unsigned int k;
                 std::cout << "Enter n:" << std::endl;
-                n = get_int();
+                k = get_u_int();
+                Item* item = new Item[k];
+                int count = init_k_items(item, k);
                 delete t;
-                try {
-                    t = new Table(n);
-                } catch (const char *msg) {
-                    std::cerr << msg << std::endl;
-                    break;
-                }
+                t = new Table(item, count);
+                delete [] item;
                 break;
 
             case 3:
@@ -57,15 +52,8 @@ int main() {
 
             case 4:
                 std::cout << "***Add new element***" << std::endl;
-                if (!t) {
-                    try {
-                        t = new Table(1);
-                    } catch (const char *msg) {
-                        std::cerr << msg << std::endl;
-                        break;
-                    }
-                    break;
-                }
+                /*if (!t)
+                    t = new Table;
 
                 std::cout << "Enter key:" << std::endl;
                 key = get_int();
@@ -76,7 +64,7 @@ int main() {
                 } catch (const char *msg) {
                     std::cerr << msg << std::endl;
                     break;
-                }
+                }*/
                 break;
 
             case 5:
@@ -92,7 +80,7 @@ int main() {
 
             case 6:
                 std::cout << "***Modify info of element by key***" << std::endl;
-                if (!t) {
+                /*if (!t) {
                     std::cout << "Table is empty" << std::endl;
                     break;
                 }
@@ -100,7 +88,7 @@ int main() {
                 key = get_int();
                 std::cout << "Enter new info:" << std::endl;
                 std::cin >> str;
-                t->modify_info(key, str);
+                t->modify_info(key, str);*/
                 break;
 
             case 7:
@@ -123,5 +111,6 @@ int main() {
         }
     } while (c != 0);
     delete t;
+    delete [] str;
     return 0;
 }

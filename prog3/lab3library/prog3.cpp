@@ -1,28 +1,25 @@
 #include <iostream>
 #include "prog3.h"
 using namespace STATIC;
-Table::Table(int n) {
-    if (n < 1)
+Table::Table(Item *item, unsigned int k) {
+    if (k < 1)
         throw "Current table size can't be less than 1";
-    if (n > SIZE)
-        throw "Current table size can't be more than SIZE";
-    if (LENGTH < 1)
-        throw "Length of information can't be less than 1";
     this->n = 0;
-    int i, key;
-    char str[LENGTH];
-    for (i = 0; i < n; i++) {
+    int i, key, length = item->LENGTH;
+    char* str = new char[length];
+    for (i = 0; i < k; i++) {
         std::cout << "Enter key:" << std::endl;
-        key = get_int();
-        std::cout << "Enter information:" << std::endl;
-        std::cin >> str;
+        key = item[i].key;
+        strcat(str, item[i].str);
         try {
             add_item(key, str);
         } catch (const char *msg) {
             std::cerr << msg << std::endl;
+            delete [] str;
             return;
         }
     }
+    delete [] str;
 }
 
 int Table::find_item(int key) const {
@@ -91,11 +88,13 @@ void Table::show_table() const {
 void Table::find_and_show() const {
     int key,j;
     char *str = nullptr;
+    unsigned int length;
     std::cout << "Enter key:" << std::endl;
     key = get_int();
     j = find_item(key);
     if (j >= 0)  {
-        str = new char[LENGTH];
+        length = item[j].LENGTH;
+        str = new char[length];
         get_info(j, str);
     } else {
         std::cout << "Item with this key wasn't found" << std::endl;
@@ -103,6 +102,21 @@ void Table::find_and_show() const {
     }
     std::cout << "Info \"" << str << "\"" << std::endl;
     delete str;
+}
+
+int init_k_items(Item *item, unsigned int k, std::istream &c) {
+    if (k == 0) throw "Count of items can't be less than 1";
+    unsigned int length = item->LENGTH;
+    char s[1000];
+    int key, count = 0;
+    for (int i = 0; i < k; i++) {
+        std::cout << "Enter key:" << std::endl;
+        if (!(c >> key)) return count;
+        std::cout << "Enter info:" << std::endl;
+        c >> s;
+        count++;
+    }
+    return count;
 }
 
 bool correct_get_int(int &a) noexcept {
@@ -125,3 +139,22 @@ int get_int() noexcept {
     return num;
 }
 
+bool correct_get_u_int(unsigned int &a) noexcept {
+    std::cin >> a;
+    if (!std::cin.good()) {
+        std::cin.clear();
+        std::cin.ignore();
+        return false;
+    }
+    return true;
+}
+
+int get_u_int() noexcept {
+    unsigned int num;
+    while (true) {
+        if (correct_get_u_int(num))
+            break;
+        std::cout << "Wrong number" << std::endl;
+    }
+    return num;
+}
