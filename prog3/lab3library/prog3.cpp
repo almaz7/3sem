@@ -5,8 +5,8 @@ Table::Table(Item *item1, int k) {
     if (k < 1)
         throw "Current table size can't be less than 1";
     this->n = 0;
-    int key;
-    unsigned int i, length = Item::LENGTH;
+    int i, key;
+    unsigned int  length = Item::LENGTH;
     char* str = new char[length];
     for (i = 0; i < k; i++) {
         key = item1[i].key;
@@ -44,9 +44,8 @@ void Table::add_item(int key, char *str) {
     if (n == SIZE) throw "Table is full";
     unsigned int length = Item::LENGTH;
     if (length <= strlen(str)) throw "Info is too long";
-
     int i = this->n - 1;
-    while (item[i].key > key) {
+    while (i >= 0 && item[i].key > key) {
         item[i+1].key = item[i].key;
         item[i+1].str[0] = '\0';
         strcpy(item[i+1].str, item[i].str);
