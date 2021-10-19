@@ -1,48 +1,72 @@
 #include <prog3.h>
 #include <gtest/gtest.h>
-using namespace STATIC;
 TEST(Table, Positive) {
     Table t;
-    char* str = new char[LENGTH];
-    EXPECT_EQ(t.find_item(5), 4);
-    EXPECT_EQ(t.find_item(1), 0);
-    t.get_info(0, str);
-    EXPECT_STREQ(str, "");
-    EXPECT_THROW(t.get_info(-1, str), const char *);
-    EXPECT_THROW(t.get_info(SIZE+1, str), const char *);
-    delete str;
+    EXPECT_EQ(t.get_n(), 0);
+    EXPECT_EQ(t.find_item(1), -1);
+    char* str = new char[Item::LENGTH];
+    EXPECT_THROW(t.get_info(1, str, Item::LENGTH), const char *);
+    EXPECT_THROW(t.get_info(t.get_size()+1, str, Item::LENGTH), const char *);
+    EXPECT_THROW(t.modify_info(1, str), const char *);
+    EXPECT_THROW(t.get_info(0, str, Item::LENGTH), const char *);
+    delete [] str;
 }
 
 TEST(Table2, Positive) {
-    Table t;
-    char* str = new char[LENGTH];
-    EXPECT_EQ(t.find_item(7), 6);
-    EXPECT_EQ(t.find_item(3), 2);
-    char str2[] = {"hello"};
-    t.modify_info(3, str2);
-    t.get_info(2, str);
-    EXPECT_STREQ(str, "hello");
-    t.delete_item(5);
-    EXPECT_EQ(t.find_item(5), -1);
-    EXPECT_THROW(t.get_info(-5, str), const char *);
-    EXPECT_THROW(t.get_info(SIZE, str), const char *);
-    delete str;
+    Item items[] = {{1, "1"},{2, "2"}};
+    Table t(items, 2);
+    EXPECT_EQ(t.get_n(), 2);
+    EXPECT_EQ(t.find_item(2), 1);
+    Item items2[] = {{6, "6"},{4, "4"}};
+    t = t + items2[0];
+    t = t + items2[1];
+    EXPECT_EQ(t.get_n(), 4);
+    EXPECT_EQ(t.find_item(6), 3);
+    char* str = new char[Item::LENGTH];
+    t.get_info(1, str, Item::LENGTH);
+    EXPECT_STREQ(str, "2");
+    t.get_info(2, str, Item::LENGTH);
+    EXPECT_STREQ(str, "4");
+    char str2[] = {"world"};
+    t.modify_info(1, str2);
+    t.get_info(0, str, Item::LENGTH);
+    EXPECT_STREQ(str, "world");
+    EXPECT_THROW(t.get_info(-1, str, Item::LENGTH), const char *);
+    t = t - items2[1];
+    EXPECT_EQ(t.get_n(), 3);
+    EXPECT_EQ(t.find_item(4), -1);
 }
 
 TEST(Table3, Positive) {
-    Table t;
-    char* str = new char[LENGTH];
-    EXPECT_EQ(t.find_item(-10), -1);
-    EXPECT_EQ(t.find_item(-4), -1);
+    Item items[] = {{3, "3"}, {5, "5"}, {10, "10"}, {8, "8"}};
+    Table t(items, 4);
+    EXPECT_EQ(t.get_n(), 4);
+    EXPECT_EQ(t.find_item(8), 2);
+    Item items2[] = {{5, "5"},{4, "4"}};
+    EXPECT_THROW(t = t + items2[0], const char *);
+    t = t + items2[1];
+    EXPECT_EQ(t.find_item(5), 2);
+    EXPECT_EQ(t.find_item(4), 1);
+    EXPECT_EQ(t.get_n(), 5);
+
+    char* str = new char[Item::LENGTH];
+    t.get_info(4, str, Item::LENGTH);
+    EXPECT_STREQ(str, "10");
     char str2[] = {"world"};
-    t.modify_info(7, str2);
-    t.get_info(6, str);
+    t.modify_info(10, str2);
+    t.get_info(4, str, Item::LENGTH);
     EXPECT_STREQ(str, "world");
-    t.delete_item(10);
-    EXPECT_EQ(t.find_item(10), -1);
-    EXPECT_THROW(t.add_item(1, str2), const char *);
-    EXPECT_THROW(t.add_item(SIZE, str2), const char *);
-    delete str;
+    t = t - items2[0];
+    EXPECT_EQ(t.get_n(), 4);
+    EXPECT_EQ(t.find_item(5), -1);
+
+    Item items3[] = {{15, "15"},{20, "20"}};
+    Table t2(items3, 2);
+    t += t2;
+    EXPECT_EQ(t.get_n(), 6);
+    EXPECT_EQ(t.find_item(15), 4);
+    EXPECT_EQ(t.find_item(20), 5);
+    EXPECT_THROW(t += t2, const char *);
 }
 
 

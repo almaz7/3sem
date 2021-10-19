@@ -1,6 +1,7 @@
 #ifndef PROG3_H
 #define PROG3_H
 #include <cstring>
+#include <iostream>
 //упорядоченная матрица
 //STATIC
 struct Item {
@@ -20,6 +21,8 @@ class Table {
         Table(const Table &t) noexcept;
         //Table& operator = (const Table &t) noexcept;
         ~Table() { n = 0; }
+        int get_n() const {return this->n;}
+        int get_size() const {return this->SIZE;}
         void operator += (const Table &t);
         int find_item(int key) const; //поиск элемента таблицы по ключу методом двоичного поиска //+= для таблицы (конкатенация) и поиск перегрузить
         void add_item(int key, char* str); //добавление элемента в таблицу

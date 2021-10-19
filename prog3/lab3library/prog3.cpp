@@ -1,4 +1,3 @@
-#include <iostream>
 #include "prog3.h"
 //STATIC
 Table::Table(Item *item1, int k) {
@@ -16,9 +15,8 @@ Table::Table(Item *item1, int k) {
             //add_item(key, str);
             *this = *this + item1[i];
         } catch (const char *msg) {
-            std::cerr << msg << std::endl;
             delete [] str;
-            return;
+            throw msg;
         }
 
     }
@@ -26,7 +24,6 @@ Table::Table(Item *item1, int k) {
 }
 
 Table::Table(const Table &t) noexcept {
-    std::cout << "Copy constructor" << std::endl;
     this->n = t.n;
     for (int i = 0; i < t.n; i++) {
         item[i].key = t.item[i].key;
@@ -42,8 +39,7 @@ void Table::operator += (const Table &t) {
         try {
             *this = *this + t.item[i];
         } catch (const char *msg) {
-            std::cerr << msg << std::endl;
-            return;
+            throw msg;
         }
     }
 }
@@ -195,13 +191,11 @@ void Table::find_and_show() const {
         try {
             get_info(j, str, length);
         } catch (const char *msg) {
-            std::cerr << msg << std::endl;
             delete [] str;
-            return;
+            throw msg;
         }
     } else {
-        std::cout << "Item with this key wasn't found" << std::endl;
-        return;
+        throw "Item with this key wasn't found";
     }
     std::cout << "Info \"" << str << "\"" << std::endl;
     delete [] str;

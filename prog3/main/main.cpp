@@ -62,7 +62,12 @@ int main() {
                     std::cout << "Table is empty" << std::endl;
                     break;
                 }
-                t->find_and_show();
+                try {
+                    t->find_and_show();
+                } catch (const char *msg) {
+                    std::cerr << msg << std::endl;
+                    break;
+                }
                 break;
 
             case 4:
@@ -94,7 +99,6 @@ int main() {
                 key = get_int();
                 try {
                     Item item = {key, '\0'};
-                    strcat(item.str, str);
                     *t = *t - item;
                     //t->delete_item(key);
                 } catch (const char *msg) {
