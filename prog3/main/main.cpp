@@ -14,6 +14,7 @@ int main() {
         std::cout << "5. Delete element by key" << std::endl;
         std::cout << "6. Modify info of element by key" << std::endl;
         std::cout << "7. Show table" << std::endl;
+        std::cout << "8. Concatenate 2 tables" << std::endl;
 
         c = get_int();
         switch (c) {
@@ -73,7 +74,10 @@ int main() {
                 std::cout << "Enter info:" << std::endl;
                 std::cin >> str;
                 try {
-                    t->add_item(key, str);
+                    Item item = {key, '\0'};
+                    strcat(item.str, str);
+                    *t = *t + item;
+                    //t->add_item(key, str);
                 } catch (const char *msg) {
                     std::cerr << msg << std::endl;
                     break;
@@ -89,7 +93,10 @@ int main() {
                 std::cout << "Enter key:" << std::endl;
                 key = get_int();
                 try {
-                    t->delete_item(key);
+                    Item item = {key, '\0'};
+                    strcat(item.str, str);
+                    *t = *t - item;
+                    //t->delete_item(key);
                 } catch (const char *msg) {
                     std::cerr << msg << std::endl;
                     break;
@@ -121,13 +128,52 @@ int main() {
                     break;
                 }
                 try {
-                    t->show_table(std::cout);
+                    //t->show_table(std::cout);
+                    std::cout << *t << std::endl;
                 } catch (const char *msg) {
                     std::cerr << msg << std::endl;
                     break;
                 }
                 break;
+            case 8:
+            {
+                std::cout << "***Concatenate 2 tables***" << std::endl;
+                int k;
+                std::cout << "Enter k:" << std::endl;
+                k = get_int();
+                Item *items;
+                items = new Item[k];
+                int count;
+                count = k;
+                try {
+                    init_k_items(items, k, std::cin);
+                } catch (const char *msg) {
+                    std::cerr << msg << std::endl;
+                    delete[] items;
+                    break;
+                }
+                if (k < count) std::cout << "Not all data were added" << std::endl;
+                Table *a = nullptr;
+                try {
+                    a = new Table(items, k);
+                } catch (const char *msg) {
+                    std::cerr << msg << std::endl;
+                    delete[] items;
+                    break;
+                }
+                try {
+                    if (a) *t += *a;
+                } catch (const char *msg) {
+                    std::cerr << msg << std::endl;
+                    delete[] items;
+                    delete a;
+                    break;
+                }
 
+                delete a;
+                delete[] items;
+                break;
+            }
             default:
                 std::cout << "You are wrong! Try again" << std::endl;
                 break;
