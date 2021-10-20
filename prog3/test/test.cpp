@@ -45,6 +45,7 @@ TEST(Table3, Positive) {
     Item items2[] = {{5, "5"},{4, "4"}};
     EXPECT_THROW(t = t + items2[0], const char *);
     t = t + items2[1];
+    EXPECT_THROW(t.add_item(items2[0].key, items2[0].str), const char *);
     EXPECT_EQ(t.find_item(5), 2);
     EXPECT_EQ(t.find_item(4), 1);
     EXPECT_EQ(t.get_n(), 5);
@@ -57,15 +58,18 @@ TEST(Table3, Positive) {
     t.get_info(4, str, Item::LENGTH);
     EXPECT_STREQ(str, "world");
     t = t - items2[0];
-    EXPECT_EQ(t.get_n(), 4);
+    EXPECT_THROW(t.delete_item(items2[0].key), const char *);
+    t.delete_item(8);
     EXPECT_EQ(t.find_item(5), -1);
+    EXPECT_EQ(t.find_item(8), -1);
+    EXPECT_EQ(t.get_n(), 3);
 
     Item items3[] = {{15, "15"},{20, "20"}};
     Table t2(items3, 2);
     t += t2;
-    EXPECT_EQ(t.get_n(), 6);
-    EXPECT_EQ(t.find_item(15), 4);
-    EXPECT_EQ(t.find_item(20), 5);
+    EXPECT_EQ(t.get_n(), 5);
+    EXPECT_EQ(t.find_item(15), 3);
+    EXPECT_EQ(t.find_item(20), 4);
     EXPECT_THROW(t += t2, const char *);
 }
 
