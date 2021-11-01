@@ -32,7 +32,7 @@ Table::Table(const Table &t) noexcept {
     }
 }
 
-void Table::operator += (const Table &t) {
+Table Table::operator += (const Table &t) {
     if (this->n + t.n > this->SIZE)
         throw "SIZE value isn't enough for concatenation";
     for (int i = 0; i < t.n; i++) {
@@ -42,6 +42,7 @@ void Table::operator += (const Table &t) {
             throw msg;
         }
     }
+    return *this;
 }
 
 /*Table& Table::operator = (const Table &t) noexcept {
@@ -53,8 +54,8 @@ void Table::operator += (const Table &t) {
     }
     std::cout << "Operator =" << std::endl;
     return *this;
-}*/
-
+}
+*/
 int Table::find_item(int key) const {
     int i = 0;
     int m = this->n - 1, j;
@@ -88,10 +89,10 @@ void Table::add_item(int key, char *str) {
     this->n++;
 }
 
-Table Table::operator + (const Item &item1) {
-    if (find_item(item1.key) >= 0) throw "Item with this key already exists";
-    if (n == SIZE) throw "Table is full";
-    Table tmp(*this);
+Table operator + (const Table &t, const Item &item1) {
+    if (t.find_item(item1.key) >= 0) throw "Item with this key already exists";
+    if (t.n == t.SIZE) throw "Table is full";
+    Table tmp(t);
     unsigned int length = Item::LENGTH;
     if (length <= strlen(item1.str)) throw "Info is too long";
     int i = tmp.n - 1;
@@ -120,11 +121,11 @@ void Table::delete_item(int key) {
     this->n--;
 }
 
-Table Table::operator - (const Item &item1) {
-    int j = find_item(item1.key);
+Table operator - (const Table &t, const Item &item1) {
+    int j = t.find_item(item1.key);
     if (j < 0)
         throw "Item with this key wasn't found";
-    Table tmp(*this);
+    Table tmp(t);
     for (int i = j; i < tmp.n - 1; i++) {
         tmp.item[i].key = tmp.item[i+1].key;
         tmp.item[i].str[0] = '\0';

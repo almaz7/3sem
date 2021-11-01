@@ -166,6 +166,7 @@ int main() {
                     break;
                 }
                 try {
+                    if (!t) t = new Table;
                     if (a) *t += *a;
                 } catch (const char *msg) {
                     std::cerr << msg << std::endl;
