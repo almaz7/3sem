@@ -74,5 +74,10 @@ TEST(Table3, Positive) {
 }
 
 
-
-
+TEST(Table4, Positive) {
+    Item items[] = {{3,  "3"}};
+    Table t(items);
+    EXPECT_EQ(t.get_n(), 1);
+    EXPECT_EQ(t.find_item(8), -1);
+    EXPECT_EQ(t.find_item(3), 0);
+}

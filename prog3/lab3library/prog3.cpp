@@ -5,7 +5,7 @@ Table::Table(Item *item1, int k) {
         throw "Current table size can't be less than 1";
     this->n = 0;
     int i, key;
-    unsigned int  length = Item::LENGTH;
+    unsigned int length = Item::LENGTH;
     char* str = new char[length];
     for (i = 0; i < k; i++) {
         /*key = item1[i].key;
@@ -45,17 +45,6 @@ Table Table::operator += (const Table &t) {
     return *this;
 }
 
-/*Table& Table::operator = (const Table &t) noexcept {
-    this->n = t.n;
-    for (int i = 0; i < t.n; i++) {
-        item[i].key = t.item[i].key;
-        item[i].str[0] = '\0';
-        strcpy(item[i].str, t.item[i].str);
-    }
-    std::cout << "Operator =" << std::endl;
-    return *this;
-}
-*/
 int Table::find_item(int key) const {
     int i = 0;
     int m = this->n - 1, j;

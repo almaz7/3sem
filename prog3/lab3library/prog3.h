@@ -5,7 +5,7 @@
 //упорядоченная матрица
 //STATIC
 struct Item {
-    static constexpr int unsigned LENGTH = 31;
+    static constexpr unsigned int LENGTH = 31;
     int key;
     char str[LENGTH];
 };
@@ -19,11 +19,10 @@ class Table {
         Table():n(0){}// пустой конструктор для инициализации таблицы по умолчанию
         Table(Item *item, int k=1); //создание таблицы с инициализацией k элементов из массива ключей и инфо
         Table(const Table &t) noexcept;
-        //Table& operator = (const Table &t) noexcept;
         ~Table() {n = 0;}
         int get_n() const {return this->n;}
         int get_size() const {return this->SIZE;}
-        Table operator += (const Table &t);//Table &
+        Table operator += (const Table &t);
         int find_item(int key) const; //поиск элемента таблицы по ключу методом двоичного поиска
         void add_item(int key, char* str); //добавление элемента в таблицу
         friend Table operator + (const Table &t, const Item &item);
