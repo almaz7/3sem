@@ -1,1 +1,0 @@
-/usr/bin/c++.exe -g -Wl,--enable-auto-import CMakeFiles/prog3_misha.dir/main_old.cpp.o CMakeFiles/prog3_misha.dir/table.cpp.o -o prog3_misha.exe -Wl,--out-implib,libprog3_misha.dll.a -Wl,--major-image-version,0,--minor-image-version,0 

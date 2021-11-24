@@ -29,7 +29,7 @@ Link::Link(const Link &l):plane_count(l.plane_count), command(l.command), x(l.x)
 void Link::insert_plane(const Plane &p) {
     if (plane_count >= 4) throw std::logic_error("Count of planes in Link can't be more than 4");
     PRO pro; Mask mask; Radio radio; REB reb; Scout scout;
-    
+
 }
 
 void Link::delete_plane(const int& i) {
