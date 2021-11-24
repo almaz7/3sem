@@ -1,6 +1,8 @@
 #include "prog3.h"
 //STATIC
 Table::Table(Item *item1, int k) {
+    if (!item1)
+        throw "Item is nullptr";
     if (k < 1)
         throw "Current table size can't be less than 1";
     this->n = 0;

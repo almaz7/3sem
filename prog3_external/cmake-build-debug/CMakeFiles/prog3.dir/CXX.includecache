@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/cygdrive/c/Users/1/Desktop/3sem/3sem/prog3_external/external.cpp
+external.h
+/cygdrive/c/Users/1/Desktop/3sem/3sem/prog3_external/external.h
+
+/cygdrive/c/Users/1/Desktop/3sem/3sem/prog3_external/external.h
+table.h
+/cygdrive/c/Users/1/Desktop/3sem/3sem/prog3_external/table.h
+fstream
+-
+
+/cygdrive/c/Users/1/Desktop/3sem/3sem/prog3_external/table.h
+iostream
+-
+cstring
+-
+stdexcept
+-
+
