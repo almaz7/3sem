@@ -74,9 +74,9 @@ class Plane {
     double get_attack_r() const; //получить радиус атаки
 
     void get_gun_damage(const int& dmg, const int& p, const int& rof, const int& gun_count, const double& plane_reduce_hit) noexcept; //получить урон от пушки
-    void get_rocket_damage(const int& dmg, const int& rof, int r_count) noexcept; //получить урон от ракеты
-    void gun_shoot(Plane &plane) noexcept; //выстрелить из пушки
-    void rocket_shoot(Plane &plane) noexcept; //выстрелить ракетой
+    void get_rocket_damage(const int& dmg, const int& rof, int r_count, const int& REB_p) noexcept; //получить урон от ракеты
+    void gun_shoot(Plane &plane, const int& REB_p) noexcept; //выстрелить из пушки
+    void rocket_shoot(Plane &plane, const int& REB_p) noexcept; //выстрелить ракетой
     int get_type() const {return type;}
     int get_max_health() const {return max_health;}
     int get_cur_health() const {return cur_health;}
@@ -138,7 +138,7 @@ class PRO: public Plane { //истребитель ПРО
 
     std::ostream& print(std::ostream &c) const {
         return c << "Type \"PRO\", (" << x << ","<< y << "), health = " << cur_health << ", find_r = "
-                << get_r() << ", rocket_count = " << rocket.get_cur_count();
+                << get_r() << ", rocket_count = " << rocket.get_cur_count() << ", pro_count = " << get_cur_pro_count();
     }
     friend std::ostream& operator << (std::ostream &c, const PRO &p) {
         return p.print(c);
@@ -163,7 +163,8 @@ class Mask: public Plane { //истребитель маскировки
 
     std::ostream& print(std::ostream &c) const {
         return c << "Type \"Mask\", (" << x << ","<< y << "), health = " << cur_health << ", find_r = "
-                 << get_r() << ", rocket_count = " << rocket.get_cur_count();
+                 << get_r() << ", rocket_count = " << rocket.get_cur_count() << ", reduce_hit = "
+                 << get_reduce_hit() << ", reduce_r = " << get_reduce_r();
     }
     friend std::ostream& operator << (std::ostream &c, const Mask &p) {
         return p.print(c);
@@ -184,7 +185,7 @@ class Radio: public Plane { //истребитель радиообнаруже�
 
     std::ostream& print(std::ostream &c) const {
         return c << "Type \"Radio\", (" << x << ","<< y << "), health = " << cur_health << ", find_r = "
-                 << get_r() << ", rocket_count = " << rocket.get_cur_count();
+                 << get_r() << ", rocket_count = " << rocket.get_cur_count() << ", increase_r = " << get_increase_find_r();
     }
     friend std::ostream& operator << (std::ostream &c, const Radio &p) {
         return p.print(c);
@@ -206,7 +207,7 @@ class REB: public Plane { //истребитель РЭБ (радиоэлект�
 
     std::ostream& print(std::ostream &c) const {
         return c << "Type \"REB\", (" << x << ","<< y << "), health = " << cur_health << ", find_r = "
-                 << get_r() << ", rocket_count = " << rocket.get_cur_count();
+                 << get_r() << ", rocket_count = " << rocket.get_cur_count() << ", REB_p = " << get_REB_p();
     }
     friend std::ostream& operator << (std::ostream &c, const REB &p) {
         return p.print(c);
@@ -231,7 +232,8 @@ class Scout: public Plane { //истребитель разведки
 
     std::ostream& print(std::ostream &c) const {
         return c << "Type \"Scout\", (" << x << ","<< y << "), health = " << cur_health << ", find_r = "
-                 << get_r() << ", rocket_count = " << rocket.get_cur_count();
+                 << get_r() << ", rocket_count = " << rocket.get_cur_count() << ", reduce_r = "
+                 << get_reduce_r() << ", increase_r = " << get_increase_find_r();
     }
     friend std::ostream& operator << (std::ostream &c, const Scout &p) {
         return p.print(c);
@@ -261,15 +263,15 @@ class Link { //звено истребителей
     void insert_plane(const Plane& p);
     void delete_plane(const int& num);
     double get_r() const {   //максимальный радиус обнаружения среди истребителей звена
-        if (plane_count <= 0 || !plane) return 0;
+        if (plane_count <= 0 || !plane) throw std::logic_error("Link is empty");
         double r = plane[0]->get_r();
         for (int i = 1; i < plane_count; i++) {
             r = my_max(r,plane[i]->get_r());
         }
         return r;
     }
-    int get_REB_p() const {  //максимальный процент радиоэлктронной борьбы среди истребителей звена
-        if (plane_count <= 0 || !plane) return 0;
+    int get_REB_p() const {  //максимальный процент радиоэлектронной борьбы среди истребителей звена
+        if (plane_count <= 0 || !plane) throw std::logic_error("Link is empty");
         double p = plane[0]->get_REB_p();
         for (int i = 1; i < plane_count; i++) {
             p = my_max(p,plane[i]->get_REB_p());
@@ -277,7 +279,7 @@ class Link { //звено истребителей
         return p;
     }
     double get_reduce_r() const {  //минимальный коэффициент уменьшения собственного радиуса обнаружения среди истребителей звена
-        if (plane_count <= 0 || !plane) return 1;
+        if (plane_count <= 0 || !plane) throw std::logic_error("Link is empty");
         double rate = plane[0]->get_reduce_r();
         for (int i = 1; i < plane_count; i++) {
             rate = my_max(rate,plane[i]->get_reduce_r());
@@ -285,7 +287,7 @@ class Link { //звено истребителей
         return rate;
     }
     double get_increase_r() const {  //максимальный коэффициент увеличения радиуса обнаружения противников среди истребителей звена
-        if (plane_count <= 0 || !plane) return 1;
+        if (plane_count <= 0 || !plane) throw std::logic_error("Link is empty");
         double rate = plane[0]->get_increase_find_r();
         for (int i = 1; i < plane_count; i++) {
             rate = my_max(rate,plane[i]->get_increase_find_r());
@@ -293,8 +295,8 @@ class Link { //звено истребителей
         return rate;
     }
     double get_enemy_find_r(const Link& enemy_link) const {  //радиус обнаружения звеном звена противника
-        if (plane_count <= 0 || !plane) return 0;
-
+        if (plane_count <= 0 || !plane) throw std::logic_error("Link is empty");
+        if (enemy_link.get_plane_count() <= 0) throw std::logic_error("Enemy link is empty");
         double reduce_r = enemy_link.get_reduce_r(), increase_r = get_increase_r();
 
         if (reduce_r < 1) {
@@ -325,7 +327,8 @@ class Link { //звено истребителей
     void set_y(double y) noexcept {this->y = y;}
     void set_command(int c) noexcept {this->command = c;}
 
-    friend std::ostream& operator << (std::ostream &c, const Link &link) {
+    friend std::ostream& operator << (std::ostream &c, const Link &link) noexcept {
+        if (link.plane_count <= 0 || !link.plane) return c << "Link is empty\n";
         c << "Link description: r = "<< link.get_r() << ", REB_p = " << link.get_REB_p()
           << ", reduce_r = " << link.get_reduce_r() << ", increase_r = " << link.get_increase_r() << '\n';
         for (int i = 0; i < link.plane_count; i++) {
@@ -359,7 +362,7 @@ class Table {
     int get_Link_count() const;
     void insert_Link(const Item &item);
     void delete_Link(const int& id);
-    friend std::ostream& operator << (std::ostream &c, Table &t) {
+    friend std::ostream& operator << (std::ostream &c, Table &t) noexcept {
         if (t.vec.begin() == t.vec.end()) {
             c << "Table is empty\n";
             return c;
@@ -441,7 +444,7 @@ class Mission {
     void rocket_shoot_plane_in_enemy_t(const int& id1, const int& num1, const int& id2, const int& num2);
     void rocket_shoot_plane_in_t(const int& id2, const int& num2,const int& id1, const int& num1);
 
-    friend std::ostream& operator << (std::ostream &c, Mission &m) {
+    friend std::ostream& operator << (std::ostream &c, Mission &m) noexcept {
         c << "\n***Table***\n";
         c << m.t;
         c << "***Enemy table***\n";

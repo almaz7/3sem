@@ -16,41 +16,48 @@ void Plane::get_gun_damage(const int& dmg, const int& p, const int& rof, const i
     if (cur_health < 0) cur_health = 0;
 }
 
-void Plane::get_rocket_damage(const int& dmg, const int& rof, int r_count) noexcept {
+void Plane::get_rocket_damage(const int& dmg, const int& rof, int r_count, const int& REB_p) noexcept {
+    int pro_count = get_cur_pro_count();
     for (int i = 0; i < rof; i++) {
         if (r_count <= 0) break;
-        cur_health -= dmg * r_count;
+        if (pro_count > 0) {
+            if (rand() % 100 + 1 < REB_p) cur_health -= dmg * r_count;
+            pro_count--;
+        } else cur_health -= dmg * r_count;
         r_count--;
     }
+    set_cur_pro_count(pro_count);
     if (cur_health < 0) cur_health = 0;
 }
 
-void Plane::gun_shoot(Plane &plane) noexcept {
+void Plane::gun_shoot(Plane &plane, const int& REB_p) noexcept {
     double x1 = x, x2 = plane.get_x(), y1 = y, y2 = plane.get_y();
     if (gun.get_dist() < sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2))) {
         return;
     }
-    int dmg = gun.get_dmg(), p = gun.get_p(), rof = gun.get_rof(), REB_p;
+    int dmg = gun.get_dmg(), p = gun.get_p(), rof = gun.get_rof();
     double plane_reduce_hit;
     if (typeid(plane) == typeid(Mask)) {
         plane_reduce_hit = plane.get_reduce_hit();  //коэффициент изменения процента попаданий
-        REB_p = get_REB_p(); //процент игнорирования маскировки(0 - для обычного, >=0 для REB)
+        //REB_p - процент игнорирования маскировки(0 - для обычного, >=0 для REB)
         plane_reduce_hit += double(REB_p)/100;
         if (plane_reduce_hit > 1) plane_reduce_hit = 1;
     } else plane_reduce_hit = 1;
     plane.get_gun_damage(dmg, p, rof, gun_count, plane_reduce_hit);
 }
 
-void Plane::rocket_shoot(Plane &plane) noexcept {
+void Plane::rocket_shoot(Plane &plane, const int& REB_p) noexcept {
     double x1 = x, x2 = plane.get_x(), y1 = y, y2 = plane.get_y();
     int dmg = rocket.get_dmg(), rof = rocket.get_rof(), r_count = rocket.get_cur_count();
     if (rocket.get_dist() < sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2))) {
         r_count -= rof;
+        if (r_count < 0) r_count = 0;
         rocket.set_cur_count(r_count);
         return;
-    }                              ///////проверка на про
-    plane.get_rocket_damage(dmg, rof, r_count);
+    }
+    plane.get_rocket_damage(dmg, rof, r_count, REB_p);
     r_count -= rof;
+    if (r_count < 0) r_count = 0;
     rocket.set_cur_count(r_count);
 }
 
@@ -243,7 +250,13 @@ void Mission::gun_shoot_plane_in_enemy_t(const int& id1, const int& num1, const 
     if (!p) return;
     Plane *enemy_p = get_plane_enemy_t(id2, num2);
     if (!enemy_p) return;
-    p->gun_shoot(*enemy_p);
+    int REB_p = 0;
+    try {
+        REB_p = t.get_Link(id1).get_REB_p();
+    } catch (std::logic_error &e) {
+        std::cerr << e.what() << std::endl;
+    }
+    p->gun_shoot(*enemy_p, REB_p);
     if (enemy_p->get_cur_health() <= 0) delete_plane_enemy_t(id2, num2);
 }
 
@@ -252,7 +265,13 @@ void Mission::gun_shoot_plane_in_t(const int& id2, const int& num2,const int& id
     if (!p) return;
     Plane *enemy_p = get_plane_enemy_t(id2, num2);
     if (!enemy_p) return;
-    enemy_p->gun_shoot(*p);
+    int REB_p = 0;
+    try {
+        REB_p = enemy_t.get_Link(id2).get_REB_p();
+    } catch (std::logic_error &e) {
+        std::cerr << e.what() << std::endl;
+    }
+    enemy_p->gun_shoot(*p, REB_p);
     if (p->get_cur_health() <= 0) delete_plane_t(id1, num1);
 }
 
@@ -261,7 +280,13 @@ void Mission::rocket_shoot_plane_in_enemy_t(const int& id1, const int& num1, con
     if (!p) return;
     Plane *enemy_p = get_plane_enemy_t(id2, num2);
     if (!enemy_p) return;
-    p->rocket_shoot(*enemy_p);
+    int REB_p = 0;
+    try {
+        REB_p = t.get_Link(id1).get_REB_p();
+    } catch (std::logic_error &e) {
+        std::cerr << e.what() << std::endl;
+    }
+    p->rocket_shoot(*enemy_p, REB_p);
     if (enemy_p->get_cur_health() <= 0) delete_plane_enemy_t(id2, num2);
 }
 
@@ -270,7 +295,13 @@ void Mission::rocket_shoot_plane_in_t(const int& id2, const int& num2,const int&
     if (!p) return;
     Plane *enemy_p = get_plane_enemy_t(id2, num2);
     if (!enemy_p) return;
-    enemy_p->rocket_shoot(*p);
+    int REB_p = 0;
+    try {
+        REB_p = enemy_t.get_Link(id2).get_REB_p();
+    } catch (std::logic_error &e) {
+        std::cerr << e.what() << std::endl;
+    }
+    enemy_p->rocket_shoot(*p, REB_p);
     if (p->get_cur_health() <= 0) delete_plane_t(id1, num1);
 }
 

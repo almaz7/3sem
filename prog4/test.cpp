@@ -95,17 +95,17 @@ TEST(Plane, Positive) {
     EXPECT_EQ(plane->get_r(), 100);
     EXPECT_EQ(pro->get_r(), 100);
 
-    pro->rocket_shoot(*scout);
+    pro->rocket_shoot(*scout, pro->get_REB_p());
     EXPECT_EQ(pro->get_rocket().get_cur_count(), 1);
     EXPECT_EQ(pro->get_attack_r(), 50);
-    pro->rocket_shoot(*reb);
+    pro->rocket_shoot(*reb, pro->get_REB_p());
     EXPECT_EQ(pro->get_rocket().get_cur_count(), 0);
     EXPECT_EQ(pro->get_attack_r(), 10);
     EXPECT_EQ(scout->get_cur_health(), 0);
     EXPECT_EQ(reb->get_cur_health(), 0);
 
-    pro->gun_shoot(*mask);
-    pro->gun_shoot(*radio);
+    pro->gun_shoot(*mask, pro->get_REB_p());
+    pro->gun_shoot(*radio, pro->get_REB_p());
 
     EXPECT_NE(mask->get_cur_health(), 100);
     EXPECT_NE(radio->get_cur_health(), 100);

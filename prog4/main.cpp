@@ -176,6 +176,11 @@ int link_radius() {
     print(link2.get_enemy_find_r(link4));
     print(link2.get_enemy_find_r(link1));
     print(link3.get_enemy_find_r(link2));
+    delete scout;
+    delete pro;
+    delete reb;
+    delete mask;
+    delete [] plane;
     return 0;
 }
 
@@ -198,23 +203,23 @@ int plane() {
 
 
     print("Shoot 2 planes with rockets");
-    pro->rocket_shoot(*scout);
-    pro->rocket_shoot(*reb);
+    pro->rocket_shoot(*scout, pro->get_REB_p());
+    pro->rocket_shoot(*reb, pro->get_REB_p());
     print(pro->get_attack_r());
     print(scout->get_cur_health());
     print(reb->get_cur_health());
 
     Mask *mask1 = new Mask;
     print("Shoot 2 planes with gun");
-    pro->gun_shoot(*mask);
-    pro->gun_shoot(*radio);
-    reb->gun_shoot(*mask1);
+    pro->gun_shoot(*mask, pro->get_REB_p());
+    pro->gun_shoot(*radio, pro->get_REB_p());
+    reb->gun_shoot(*mask1, reb->get_REB_p());
     print(pro->get_attack_r());
     print(mask->get_cur_health());
     print(mask1->get_cur_health());
     print(radio->get_cur_health());
 
-    delete plane; delete pro; delete mask; delete radio; delete reb; delete scout;
+    delete plane; delete pro; delete mask; delete radio; delete reb; delete scout; delete mask1;
     return 0;
 }
 
@@ -232,19 +237,20 @@ int mission() {
     Item item(5, l1);
     m.insert_Link_t(item);
     Plane *p = m.get_plane_t(5,1);
-    if (p) std::cout << *p << std::endl;
+    //if (p) std::cout << *p << std::endl;
 
     m.insert_plane_t(1,*reb);
     m.insert_plane_enemy_t(2,*pro);
     m.insert_plane_enemy_t(2,*reb);
     std::cout << m;
 
-
     m.gun_shoot_plane_in_enemy_t(1,1,2,1);
     m.gun_shoot_plane_in_t(2,1,5,1);
     std::cout << m;
 
     m.rocket_shoot_plane_in_enemy_t(5,1,2,2);
+    m.rocket_shoot_plane_in_enemy_t(1,1,2,1);
+    m.rocket_shoot_plane_in_enemy_t(1,1,2,1);
     std::cout << m;
 
     delete mask; delete pro; delete reb;
@@ -254,8 +260,8 @@ int mission() {
 int main() {
     //table();
     //link();
-    link_radius();
+    //link_radius();
     //plane();
-    //mission();
+    mission();
     return 0;
 }
