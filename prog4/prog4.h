@@ -6,8 +6,9 @@
 #include <vector>
 #include <stdexcept>
 #include <ctime>
+#include "my_vector.h"
 #define my_max(x,y) x > y ? x : y
-#define my_min(x,y) x < y ? x : y
+
 
 class Gun { //пушка
     private:
@@ -251,6 +252,7 @@ class Link { //звено истребителей
     Link(): plane_count(0), plane(nullptr), command(0), x(0), y(0) {}
     Link(Plane **p, const int& count);
     Link(const Link &l);
+    Link& operator=(const Link &l);
     ~Link() {
         for (int i = 0; i < plane_count; i++) {
             delete plane[i];
@@ -262,57 +264,12 @@ class Link { //звено истребителей
     }
     void insert_plane(const Plane& p);
     void delete_plane(const int& num);
-    double get_r() const {   //максимальный радиус обнаружения среди истребителей звена
-        if (plane_count <= 0 || !plane) throw std::logic_error("Link is empty");
-        double r = plane[0]->get_r();
-        for (int i = 1; i < plane_count; i++) {
-            r = my_max(r,plane[i]->get_r());
-        }
-        return r;
-    }
-    int get_REB_p() const {  //максимальный процент радиоэлектронной борьбы среди истребителей звена
-        if (plane_count <= 0 || !plane) throw std::logic_error("Link is empty");
-        double p = plane[0]->get_REB_p();
-        for (int i = 1; i < plane_count; i++) {
-            p = my_max(p,plane[i]->get_REB_p());
-        }
-        return p;
-    }
-    double get_reduce_r() const {  //минимальный коэффициент уменьшения собственного радиуса обнаружения среди истребителей звена
-        if (plane_count <= 0 || !plane) throw std::logic_error("Link is empty");
-        double rate = plane[0]->get_reduce_r();
-        for (int i = 1; i < plane_count; i++) {
-            rate = my_max(rate,plane[i]->get_reduce_r());
-        }
-        return rate;
-    }
-    double get_increase_r() const {  //максимальный коэффициент увеличения радиуса обнаружения противников среди истребителей звена
-        if (plane_count <= 0 || !plane) throw std::logic_error("Link is empty");
-        double rate = plane[0]->get_increase_find_r();
-        for (int i = 1; i < plane_count; i++) {
-            rate = my_max(rate,plane[i]->get_increase_find_r());
-        }
-        return rate;
-    }
-    double get_enemy_find_r(const Link& enemy_link) const {  //радиус обнаружения звеном звена противника
-        if (plane_count <= 0 || !plane) throw std::logic_error("Link is empty");
-        if (enemy_link.get_plane_count() <= 0) throw std::logic_error("Enemy link is empty");
-        double reduce_r = enemy_link.get_reduce_r(), increase_r = get_increase_r();
+    double get_r() const;   //максимальный радиус обнаружения среди истребителей звена
+    int get_REB_p() const;  //максимальный процент радиоэлектронной борьбы среди истребителей звена
+    double get_reduce_r() const;  //минимальный коэффициент уменьшения собственного радиуса обнаружения среди истребителей звена
+    double get_increase_r() const;  //максимальный коэффициент увеличения радиуса обнаружения противников среди истребителей звена
+    double get_enemy_find_r(const Link& enemy_link) const;  //радиус обнаружения звеном звена противника
 
-        if (reduce_r < 1) {
-            reduce_r += (double)get_REB_p()/100;
-        }
-        if (reduce_r > 1) reduce_r = 1;
-
-        if (increase_r > 1) {
-            increase_r -= (double)(enemy_link.get_REB_p())/100;
-        }
-        if (increase_r < 1) increase_r = 1;
-
-        //std::cout <<"red " << reduce_r << std::endl;
-        //std::cout <<"in " << increase_r << std::endl;
-        return increase_r * reduce_r * enemy_link.get_r();
-    }
     Plane* get_plane(const int& num) {
         if (num < 1 || num > 4) throw std::logic_error("Invalid index");
         if (plane_count <= 0 || !plane) throw std::logic_error("Link is empty");
@@ -346,17 +303,21 @@ struct Item {
     Item(const Item& item): id(item.id), link(item.link) {}
 };
 
+//typedef Iterator<Item> It;
+//typedef Const_Iterator<Item> Const_It;
 typedef std::vector<Item>::iterator It;
 typedef std::vector<Item>::const_iterator Const_It;
 class Table {
     private:
     std::vector<Item> vec;
+    //vector<Item> vec;
     public:
     Table() = default;
     Table(const Table &t): vec(t.vec) {}
     Table(const std::vector<Item> &v): vec(v) {}
+    //Table(const vector<Item> &v): vec(v) {}
     ~Table() = default;
-    Const_It find(const int& id) const;
+    It find(const int& id);
     Const_It get_end() const {return vec.end();}
     Link& get_Link(const int& id);
     int get_Link_count() const;

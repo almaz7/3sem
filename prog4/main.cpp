@@ -250,7 +250,6 @@ int mission() {
 
     m.rocket_shoot_plane_in_enemy_t(5,1,2,2);
     m.rocket_shoot_plane_in_enemy_t(1,1,2,1);
-    m.rocket_shoot_plane_in_enemy_t(1,1,2,1);
     std::cout << m;
 
     delete mask; delete pro; delete reb;
@@ -258,10 +257,10 @@ int mission() {
 }
 
 int main() {
-    //table();
-    //link();
-    //link_radius();
-    //plane();
+    table();
+    link();
+    link_radius();
+    plane();
     mission();
     return 0;
 }

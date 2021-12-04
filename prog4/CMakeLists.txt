@@ -3,6 +3,9 @@ project(prog4)
 
 add_executable(prog4 main.cpp prog4.cpp prog4.h)
 
+project(prog4_my_vector)
+add_executable(prog4_my_vector main.cpp prog4.cpp prog4.h my_vector.h)
+
 project(test)
 ### googletest init ###
 include(FetchContent)

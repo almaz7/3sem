@@ -11,7 +11,7 @@ double Plane::get_attack_r() const {
 void Plane::get_gun_damage(const int& dmg, const int& p, const int& rof, const int& gun_count, const double& plane_reduce_hit) noexcept {
     srand(time(0));
     for (int i = 0; i < rof; i++) {
-        if (rand() % 100 + 1 < p * plane_reduce_hit) cur_health -= dmg * gun_count;
+        if (rand() % 100 < p * plane_reduce_hit) cur_health -= dmg * gun_count;
     }
     if (cur_health < 0) cur_health = 0;
 }
@@ -21,7 +21,7 @@ void Plane::get_rocket_damage(const int& dmg, const int& rof, int r_count, const
     for (int i = 0; i < rof; i++) {
         if (r_count <= 0) break;
         if (pro_count > 0) {
-            if (rand() % 100 + 1 < REB_p) cur_health -= dmg * r_count;
+            if (rand() % 100 < REB_p) cur_health -= dmg * r_count;
             pro_count--;
         } else cur_health -= dmg * r_count;
         r_count--;
@@ -115,6 +115,44 @@ Link::Link(const Link &l):plane_count(l.plane_count), command(l.command), x(l.x)
     }
 }
 
+Link& Link::operator=(const Link &l) {
+    if (this != &l) {
+        for (int i = 0; i < plane_count; i++) {
+            delete plane[i];
+            plane[i] = nullptr;
+        }
+        delete [] plane;
+        plane = nullptr;
+        plane_count = l.plane_count;
+        command = l.command;
+        x = l.x;
+        y = l.y;
+        if (l.plane_count > 0) {
+            plane = new Plane*[4];
+
+            for (int i = 0; i < l.plane_count; i++) {
+                if (typeid(*l.plane[i]) == typeid(PRO)) {
+                    plane[i] = new PRO;
+                    *plane[i] = *l.plane[i];
+                } else if (typeid(*l.plane[i]) == typeid(Mask)) {
+                    plane[i] = new Mask;
+                    *plane[i] = *l.plane[i];
+                } else if (typeid(*l.plane[i]) == typeid(Radio)) {
+                    plane[i] = new Radio;
+                    *plane[i] = *l.plane[i];
+                } else if (typeid(*l.plane[i]) == typeid(REB)) {
+                    plane[i] = new REB;
+                    *plane[i] = *l.plane[i];
+                } else if (typeid(*l.plane[i]) == typeid(Scout)) {
+                    plane[i] = new Scout;
+                    *plane[i] = *l.plane[i];
+                } else plane[i] = nullptr;
+            }
+        }
+    }
+    return *this;
+}
+
 void Link::insert_plane(const Plane &p) {
     if (plane_count >= 4) throw std::logic_error("Count of planes in Link can't be more than 4");
     PRO pro; Mask mask; Radio radio; REB reb; Scout scout;
@@ -161,8 +199,58 @@ void Link::delete_plane(const int& num) {
     plane_count--;
 }
 
-Const_It Table::find(const int& id) const {
-    std::vector<Item>::const_iterator it;
+double Link::get_r() const {   //максимальный радиус обнаружения среди истребителей звена
+    if (plane_count <= 0 || !plane) throw std::logic_error("Link is empty");
+    double r = plane[0]->get_r();
+    for (int i = 1; i < plane_count; i++) {
+        r = my_max(r,plane[i]->get_r());
+    }
+    return r;
+}
+int Link::get_REB_p() const {  //максимальный процент радиоэлектронной борьбы среди истребителей звена
+    if (plane_count <= 0 || !plane) throw std::logic_error("Link is empty");
+    double p = plane[0]->get_REB_p();
+    for (int i = 1; i < plane_count; i++) {
+        p = my_max(p,plane[i]->get_REB_p());
+    }
+    return p;
+}
+double Link::get_reduce_r() const {  //минимальный коэффициент уменьшения собственного радиуса обнаружения среди истребителей звена
+    if (plane_count <= 0 || !plane) throw std::logic_error("Link is empty");
+    double rate = plane[0]->get_reduce_r();
+    for (int i = 1; i < plane_count; i++) {
+        rate = my_max(rate,plane[i]->get_reduce_r());
+    }
+    return rate;
+}
+double Link::get_increase_r() const {  //максимальный коэффициент увеличения радиуса обнаружения противников среди истребителей звена
+    if (plane_count <= 0 || !plane) throw std::logic_error("Link is empty");
+    double rate = plane[0]->get_increase_find_r();
+    for (int i = 1; i < plane_count; i++) {
+        rate = my_max(rate,plane[i]->get_increase_find_r());
+    }
+    return rate;
+}
+double Link::get_enemy_find_r(const Link& enemy_link) const {  //радиус обнаружения звеном звена противника
+    if (plane_count <= 0 || !plane) throw std::logic_error("Link is empty");
+    if (enemy_link.get_plane_count() <= 0) throw std::logic_error("Enemy link is empty");
+    double reduce_r = enemy_link.get_reduce_r(), increase_r = get_increase_r();
+
+    if (reduce_r < 1) {
+        reduce_r += (double)get_REB_p()/100;
+    }
+    if (reduce_r > 1) reduce_r = 1;
+
+    if (increase_r > 1) {
+        increase_r -= (double)(enemy_link.get_REB_p())/100;
+    }
+    if (increase_r < 1) increase_r = 1;
+
+    return increase_r * reduce_r * enemy_link.get_r();
+}
+
+It Table::find(const int& id) {
+    It it;
     for (it = vec.begin(); it != vec.end(); ++it) {
         if (it->id == id) return it;
     }
@@ -170,24 +258,23 @@ Const_It Table::find(const int& id) const {
 }
 
 Link& Table::get_Link(const int& id)  {
-    Const_It it;
+    It it;
     it = find(id);
-
     if (it == vec.end()) throw std::logic_error("There is no link with such id");
-    return const_cast<Link&>(it->link);
+    return it->link;
 }
 
 int Table::get_Link_count() const {return vec.size();}
 
 void Table::insert_Link(const Item &item) {
-    Const_It it;
+    It it;
     it = find(item.id);
     if (it != vec.end()) throw std::logic_error("Item with such id already exists");
     vec.push_back(item);
 }
 
 void Table::delete_Link(const int& id) {
-    Const_It it;
+    It it;
     it = find(id);
     if (it == vec.end()) throw std::logic_error("There is no link with such id");
     vec.erase(it);
