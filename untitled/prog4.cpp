@@ -87,6 +87,12 @@ Link::Link(Plane **p, const int& count) {
             } else plane[i] = nullptr;
         }
     }
+    isSelectToMove = false;
+    isMove = false;
+    for (int i = 0; i < 4; i++) {
+        isSelectToGun[i] = false;
+        isSelectToRocket[i] = false;
+    }
     plane_count = count;
 }
 
@@ -113,6 +119,13 @@ Link::Link(const Link &l):plane_count(l.plane_count), command(l.command), x(l.x)
                 *plane[i] = *l.plane[i];
             } else plane[i] = nullptr;
         }
+    }
+    isSelectToMove = l.isSelectToMove;
+    isMove = l.isMove;
+    for (int i = 0; i < 4; i++) {
+        s[i] = l.s[i];
+        isSelectToGun[i] = l.isSelectToGun[i];
+        isSelectToRocket[i] = l.isSelectToRocket[i];
     }
 }
 
@@ -151,6 +164,13 @@ Link& Link::operator=(const Link &l) {
             }
         }
     }
+    isSelectToMove = l.isSelectToMove;
+    isMove = l.isMove;
+    for (int i = 0; i < 4; i++) {
+        s[i] = l.s[i];
+        isSelectToGun[i] = l.isSelectToGun[i];
+        isSelectToRocket[i] = l.isSelectToRocket[i];
+    }
     return *this;
 }
 
@@ -161,12 +181,20 @@ void Link::insert_plane(const Plane &p) {
     if (plane_count == 0)  {
         try {
             plane = new Plane *[4];
+            isSelectToMove = false;
+            isMove = false;
+            for (int i = 0; i < 4; i++) {
+                isSelectToGun[i] = false;
+                isSelectToRocket[i] = false;
+            }
         } catch (std::bad_alloc &ba) {
             std::cout << ba.what() << std::endl;
             return;
         }
     }
-    //std::cout << "inserting" << std::endl;
+
+    isSelectToGun[plane_count] = false;
+    isSelectToRocket[plane_count] = false;
     if (typeid(p) == typeid(pro)) {
         plane[plane_count] = new PRO;
         *plane[plane_count++] = p;
@@ -189,12 +217,13 @@ void Link::delete_plane(const int& num) {
     if (num < 1 || num > 4) throw std::logic_error("Invalid index");
     if (plane_count <= 0 || !plane) throw std::logic_error("Link is empty");
     if (num > plane_count) throw std::logic_error("Count of planes is less than entered number");
-
-    //std::cout << "deleting" << std::endl;
     delete plane[num-1];
     plane[num-1] = nullptr;
     for (int i = num-1; i < plane_count-1; i++) {
-        plane[i] = plane[i+1]; //<-
+        plane[i] = plane[i+1];
+        s[i] = s[i+1];
+        isSelectToGun[i] = isSelectToGun[i+1];
+        isSelectToRocket[i] = isSelectToRocket[i+1];
     }
     plane[plane_count-1] = nullptr;
     plane_count--;

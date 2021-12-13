@@ -72,10 +72,12 @@ protected:
     float r; //радиус обнаружения
 
 public:
-
-    Plane(): type(0), max_health(100), cur_health(100), speed(5), gun_count(1), x(0), y(0), r(100) {}
-    Plane(float x, float y): type(0), max_health(100), cur_health(100), speed(5), gun_count(1), x(x), y(y), r(100) {}
-    Plane(float x): type(0), max_health(100), cur_health(100), speed(5), gun_count(1), x(x), y(x), r(100) {}
+    Plane(): type(0), max_health(100), cur_health(100), speed(5),
+        gun_count(1), x(0), y(0), r(100) {}
+    Plane(float x, float y): type(0), max_health(100), cur_health(100),
+        speed(5), gun_count(1), x(x), y(y), r(100) {}
+    Plane(float x): type(0), max_health(100), cur_health(100), speed(5),
+        gun_count(1), x(x), y(x), r(100){}
     virtual ~Plane() = default;
     float get_attack_r() const; //получить радиус атаки
 
@@ -256,10 +258,17 @@ private:
     float x, y; //координаты звена
 
 public:
-    sf::Sprite s;
-    bool isSelect;
+    sf::Sprite s[4];
+    bool isSelectToMove;
+    bool isSelectToGun[4];
+    bool isSelectToRocket[4];
     bool isMove;
-    Link(): plane_count(0), plane(nullptr), command(0), x(0.f), y(0.f) {}
+    Link(): plane_count(0), plane(nullptr), command(0), x(0.f), y(0.f), isSelectToMove(false), isMove(false) {
+        for (int i = 0; i < 4; i++) {
+            isSelectToGun[i] = false;
+            isSelectToRocket[i] = false;
+        }
+    }
 /*!
  *  @brief конструктор для звена
  *  @param p указатель на массив указателей на самолеты; в случае пустого указателя будет выброшено
@@ -368,12 +377,12 @@ public:
  *  @brief задание координаты x для звена
  *  @param x координата x
  */
-    void set_x(double x) noexcept {this->x = x;}
+    void set_x(float x) noexcept {this->x = x;}
 /*!
  *  @brief задание координаты y для звена
  *  @param y координата y
  */
-    void set_y(double y) noexcept {this->y = y;}
+    void set_y(float y) noexcept {this->y = y;}
 /*!
  *  @brief задание текущей команды для звена
  *  @param c: "0" - сохранять позицию, "1" - перемещаться в точку, "2" - атака
@@ -417,6 +426,7 @@ public:
     ~Table() = default;
     It find(const int& id);
     Const_It get_end() const {return vec.end();}
+    It get_begin() {return vec.begin();}
     Link& get_Link(const int& id);
     int get_Link_count() const;
     void insert_Link(const Item &item);
@@ -441,7 +451,10 @@ private:
 public:
     Mission() = default;
     ~Mission() = default;
-
+    It get_begin_t() {return t.get_begin();}
+    Const_It get_end_t() {return t.get_end();}
+    It get_begin_enemy_t() {return enemy_t.get_begin();}
+    Const_It get_end_enemy_t() {return enemy_t.get_end();}
     Plane* get_plane_t(const int& id, const int& num) {
         Plane *p = nullptr;
         try {
@@ -460,6 +473,24 @@ public:
             std::cerr << e.what() << std::endl;
         }
         return p;
+    }
+
+    Link& get_link_t(const int& id) {
+        try {
+            return t.get_Link(id);
+        } catch (std::logic_error &e) {
+            std::cerr << e.what() << std::endl;
+            throw std::logic_error(e);
+        }
+    }
+
+    Link& get_link_enemy_t(const int& id) {
+        try {
+            return enemy_t.get_Link(id);
+        } catch (std::logic_error &e) {
+            std::cerr << e.what() << std::endl;
+            throw std::logic_error(e);
+        }
     }
 
     int get_Link_count_t() const {return t.get_Link_count();}
