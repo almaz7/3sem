@@ -61,8 +61,6 @@ TEST(Link, Positive) {
     EXPECT_EQ(link.get_plane_count(), 3);
     link.insert_plane(*pro);
     EXPECT_EQ(link.get_plane_count(), 4);
-    std::cout << "*****" << std::endl;
-    std::cout << link << std::endl;
     EXPECT_THROW(link.insert_plane(*scout), std::logic_error);
 
     EXPECT_THROW(link.delete_plane(5), std::logic_error);

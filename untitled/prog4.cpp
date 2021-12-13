@@ -1,14 +1,14 @@
 #include "prog4.h"
 #include <cmath>
-double Plane::get_attack_r() const {
-    double d;
+float Plane::get_attack_r() const {
+    float d;
     if (rocket.get_cur_count() > 0) {
         d = my_max(gun.get_dist(), rocket.get_dist());
     } else d = gun.get_dist();
     return d;
 }
 
-void Plane::get_gun_damage(const int& dmg, const int& p, const int& rof, const int& gun_count, const double& plane_reduce_hit) noexcept {
+void Plane::get_gun_damage(const int& dmg, const int& p, const int& rof, const int& gun_count, const float& plane_reduce_hit) noexcept {
     srand(time(0));
     for (int i = 0; i < rof; i++) {
         if (rand() % 100 < p * plane_reduce_hit) cur_health -= dmg * gun_count;
@@ -31,23 +31,23 @@ void Plane::get_rocket_damage(const int& dmg, const int& rof, int r_count, const
 }
 
 void Plane::gun_shoot(Plane &plane, const int& REB_p) noexcept {
-    double x1 = x, x2 = plane.get_x(), y1 = y, y2 = plane.get_y();
+    float x1 = x, x2 = plane.get_x(), y1 = y, y2 = plane.get_y();
     if (gun.get_dist() < sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2))) {
         return;
     }
     int dmg = gun.get_dmg(), p = gun.get_p(), rof = gun.get_rof();
-    double plane_reduce_hit;
+    float plane_reduce_hit;
     if (typeid(plane) == typeid(Mask)) {
         plane_reduce_hit = plane.get_reduce_hit();  //коэффициент изменения процента попаданий
         //REB_p - процент игнорирования маскировки(0 - для обычного, >=0 для REB)
-        plane_reduce_hit += double(REB_p)/100;
+        plane_reduce_hit += float(REB_p)/100;
         if (plane_reduce_hit > 1) plane_reduce_hit = 1;
     } else plane_reduce_hit = 1;
     plane.get_gun_damage(dmg, p, rof, gun_count, plane_reduce_hit);
 }
 
 void Plane::rocket_shoot(Plane &plane, const int& REB_p) noexcept {
-    double x1 = x, x2 = plane.get_x(), y1 = y, y2 = plane.get_y();
+    float x1 = x, x2 = plane.get_x(), y1 = y, y2 = plane.get_y();
     int dmg = rocket.get_dmg(), rof = rocket.get_rof(), r_count = rocket.get_cur_count();
     if (rocket.get_dist() < sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2))) {
         r_count -= rof;
@@ -200,9 +200,9 @@ void Link::delete_plane(const int& num) {
     plane_count--;
 }
 
-double Link::get_r() const {   //максимальный радиус обнаружения среди истребителей звена
+float Link::get_r() const {   //максимальный радиус обнаружения среди истребителей звена
     if (plane_count <= 0 || !plane) throw std::logic_error("Link is empty");
-    double r = plane[0]->get_r();
+    float r = plane[0]->get_r();
     for (int i = 1; i < plane_count; i++) {
         r = my_max(r,plane[i]->get_r());
     }
@@ -216,34 +216,34 @@ int Link::get_REB_p() const {  //максимальный процент рад�
     }
     return p;
 }
-double Link::get_reduce_r() const {  //минимальный коэффициент уменьшения собственного радиуса обнаружения среди истребителей звена
+float Link::get_reduce_r() const {  //минимальный коэффициент уменьшения собственного радиуса обнаружения среди истребителей звена
     if (plane_count <= 0 || !plane) throw std::logic_error("Link is empty");
-    double rate = plane[0]->get_reduce_r();
+    float rate = plane[0]->get_reduce_r();
     for (int i = 1; i < plane_count; i++) {
         rate = my_max(rate,plane[i]->get_reduce_r());
     }
     return rate;
 }
-double Link::get_increase_r() const {  //максимальный коэффициент увеличения радиуса обнаружения противников среди истребителей звена
+float Link::get_increase_r() const {  //максимальный коэффициент увеличения радиуса обнаружения противников среди истребителей звена
     if (plane_count <= 0 || !plane) throw std::logic_error("Link is empty");
-    double rate = plane[0]->get_increase_find_r();
+    float rate = plane[0]->get_increase_find_r();
     for (int i = 1; i < plane_count; i++) {
         rate = my_max(rate,plane[i]->get_increase_find_r());
     }
     return rate;
 }
-double Link::get_enemy_find_r(const Link& enemy_link) const {  //радиус обнаружения звеном звена противника
+float Link::get_enemy_find_r(const Link& enemy_link) const {  //радиус обнаружения звеном звена противника
     if (plane_count <= 0 || !plane) throw std::logic_error("Link is empty");
     if (enemy_link.get_plane_count() <= 0) throw std::logic_error("Enemy link is empty");
-    double reduce_r = enemy_link.get_reduce_r(), increase_r = get_increase_r();
+    float reduce_r = enemy_link.get_reduce_r(), increase_r = get_increase_r();
 
     if (reduce_r < 1) {
-        reduce_r += (double)get_REB_p()/100;
+        reduce_r += (float)get_REB_p()/100;
     }
     if (reduce_r > 1) reduce_r = 1;
 
     if (increase_r > 1) {
-        increase_r -= (double)(enemy_link.get_REB_p())/100;
+        increase_r -= (float)(enemy_link.get_REB_p())/100;
     }
     if (increase_r < 1) increase_r = 1;
 

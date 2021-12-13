@@ -14,9 +14,13 @@ class vector {
     T *arr;
 
     public:
-
     vector(): n(0), SIZE(0), arr(nullptr) {}
-    ~vector() {delete [] arr; arr = nullptr; n = 0; SIZE = 0;}
+    ~vector() {
+        delete [] arr;
+        arr = nullptr;
+        n = 0;
+        SIZE = 0;
+    }
     vector(const vector<T>& vec): n(vec.n), SIZE(vec.SIZE), arr(new T[vec.n]) {
         for (int i = 0; i < n; i++) {
             arr[i] = vec.arr[i];
@@ -140,7 +144,6 @@ class Iterator {
     public:
     Iterator(T *p = nullptr): ptr(p) {}
     Iterator(const It& it): ptr(it.ptr) {}
-    Iterator(const Const_Iterator<T>& it): ptr(it.ptr) {}
     bool operator ==(const It &it) const {
         return ptr == it.ptr;
     }
@@ -176,7 +179,6 @@ class Iterator {
 template <class T>
 class Const_Iterator {
     typedef Const_Iterator<T> Const_It;
-    friend Iterator<T>;
 private:
     T *ptr;
 public:

@@ -1,0 +1,422 @@
+\hypertarget{prog4_8h_source}{}\doxysection{prog4.\+h}
+\label{prog4_8h_source}\index{C:/Users/1/Desktop/3sem/3sem/prog4/prog4.h@{C:/Users/1/Desktop/3sem/3sem/prog4/prog4.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef PROG4\_H}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define PROG4\_H}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <cstring>}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <typeinfo>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <stdexcept>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <ctime>}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include "{}my\_vector.h"{}}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#define my\_max(x,y) x > y ? x : y}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{keyword}{class }\mbox{\hyperlink{class_gun}{Gun}} \{ \textcolor{comment}{//пушка}}
+\DoxyCodeLine{14     \textcolor{keyword}{private}:}
+\DoxyCodeLine{15     \textcolor{keywordtype}{int} dmg; \textcolor{comment}{//урон}}
+\DoxyCodeLine{16     \textcolor{keywordtype}{int} p; \textcolor{comment}{//процент попаданий (<=100)}}
+\DoxyCodeLine{17     \textcolor{keywordtype}{double} dist; \textcolor{comment}{//дальность стрельбы}}
+\DoxyCodeLine{18     \textcolor{keywordtype}{int} rof; \textcolor{comment}{//скорострельность пушки}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20     \textcolor{keyword}{public}:}
+\DoxyCodeLine{21     \mbox{\hyperlink{class_gun}{Gun}}():dmg(3), p(90), dist(10), rof(10)\{\}}
+\DoxyCodeLine{22     \mbox{\hyperlink{class_gun}{\string~Gun}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{23     \textcolor{keywordtype}{int} get\_dmg()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} dmg;\}}
+\DoxyCodeLine{24     \textcolor{keywordtype}{int} get\_p()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} p;\}}
+\DoxyCodeLine{25     \textcolor{keywordtype}{double} get\_dist()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} dist;\}}
+\DoxyCodeLine{26     \textcolor{keywordtype}{int} get\_rof()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} rof;\}}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28     \textcolor{keywordtype}{void} set\_dmg(\textcolor{keywordtype}{int} dmg) \textcolor{keyword}{noexcept} \{this-\/>dmg = dmg;\}}
+\DoxyCodeLine{29     \textcolor{keywordtype}{void} set\_p(\textcolor{keywordtype}{int} p) \textcolor{keyword}{noexcept} \{this-\/>p = p;\}}
+\DoxyCodeLine{30     \textcolor{keywordtype}{void} set\_dist(\textcolor{keywordtype}{double} dist) \textcolor{keyword}{noexcept} \{this-\/>dist = dist;\}}
+\DoxyCodeLine{31     \textcolor{keywordtype}{void} set\_rof(\textcolor{keywordtype}{int} rof) \textcolor{keyword}{noexcept} \{this-\/>rof = rof;\}}
+\DoxyCodeLine{32 \};}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 \textcolor{keyword}{class }\mbox{\hyperlink{class_rocket}{Rocket}} \{ \textcolor{comment}{//ракетная установка}}
+\DoxyCodeLine{35     \textcolor{keyword}{private}:}
+\DoxyCodeLine{36     \textcolor{keywordtype}{int} dmg; \textcolor{comment}{//урон}}
+\DoxyCodeLine{37     \textcolor{keywordtype}{double} dist; \textcolor{comment}{//дальность стрельбы}}
+\DoxyCodeLine{38     \textcolor{keywordtype}{int} rof; \textcolor{comment}{//скорострельность ракетной установки}}
+\DoxyCodeLine{39     \textcolor{keywordtype}{int} max\_count; \textcolor{comment}{//максимальный боезапас}}
+\DoxyCodeLine{40     \textcolor{keywordtype}{int} cur\_count; \textcolor{comment}{//текущий боезапас}}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42     \textcolor{keyword}{public}:}
+\DoxyCodeLine{43     \mbox{\hyperlink{class_rocket}{Rocket}}():dmg(100), dist(50), rof(1), max\_count(2), cur\_count(2) \{\}}
+\DoxyCodeLine{44     \mbox{\hyperlink{class_rocket}{\string~Rocket}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{45     \textcolor{keywordtype}{int} get\_dmg()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} dmg;\}}
+\DoxyCodeLine{46     \textcolor{keywordtype}{double} get\_dist()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} dist;\}}
+\DoxyCodeLine{47     \textcolor{keywordtype}{int} get\_rof()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} rof;\}}
+\DoxyCodeLine{48     \textcolor{keywordtype}{int} get\_cur\_count()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} cur\_count;\}}
+\DoxyCodeLine{49     \textcolor{keywordtype}{int} get\_max\_count()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} max\_count;\}}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51     \textcolor{keywordtype}{void} set\_dmg(\textcolor{keywordtype}{int} dmg) \textcolor{keyword}{noexcept} \{this-\/>dmg = dmg;\}}
+\DoxyCodeLine{52     \textcolor{keywordtype}{void} set\_dist(\textcolor{keywordtype}{double} dist) \textcolor{keyword}{noexcept} \{this-\/>dist = dist;\}}
+\DoxyCodeLine{53     \textcolor{keywordtype}{void} set\_rof(\textcolor{keywordtype}{int} rof) \textcolor{keyword}{noexcept} \{this-\/>rof = rof;\}}
+\DoxyCodeLine{54     \textcolor{keywordtype}{void} set\_cur\_count(\textcolor{keywordtype}{int} count) \textcolor{keyword}{noexcept} \{this-\/>cur\_count = count;\}}
+\DoxyCodeLine{55     \textcolor{keywordtype}{void} set\_max\_count(\textcolor{keywordtype}{int} count) \textcolor{keyword}{noexcept} \{this-\/>max\_count = count;\}}
+\DoxyCodeLine{56 \};}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 \textcolor{keyword}{class }\mbox{\hyperlink{class_plane}{Plane}} \{}
+\DoxyCodeLine{59     \textcolor{keyword}{protected}:}
+\DoxyCodeLine{60     \textcolor{keywordtype}{int} type; \textcolor{comment}{//модель истребителя}}
+\DoxyCodeLine{61     \textcolor{keywordtype}{int} max\_health; \textcolor{comment}{//маскимальная живучесть}}
+\DoxyCodeLine{62     \textcolor{keywordtype}{int} cur\_health; \textcolor{comment}{//текущая живучесть}}
+\DoxyCodeLine{63     \textcolor{keywordtype}{double} speed; \textcolor{comment}{//скорость}}
+\DoxyCodeLine{64     \textcolor{keywordtype}{int} gun\_count; \textcolor{comment}{//количество пушек}}
+\DoxyCodeLine{65     \mbox{\hyperlink{class_rocket}{Rocket}} rocket;}
+\DoxyCodeLine{66     \mbox{\hyperlink{class_gun}{Gun}} gun;}
+\DoxyCodeLine{67     \textcolor{keywordtype}{double} x, y; \textcolor{comment}{//текущие координаты}}
+\DoxyCodeLine{68     \textcolor{keywordtype}{double} r; \textcolor{comment}{//радиус обнаружения}}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70     \textcolor{keyword}{public}:}
+\DoxyCodeLine{71     \mbox{\hyperlink{class_plane}{Plane}}(): type(0), max\_health(100), cur\_health(100), speed(5), gun\_count(1), x(0), y(0), r(100) \{\}}
+\DoxyCodeLine{72     \mbox{\hyperlink{class_plane}{Plane}}(\textcolor{keywordtype}{double} x, \textcolor{keywordtype}{double} y): type(0), max\_health(100), cur\_health(100), speed(5), gun\_count(1), x(x), y(y), r(100) \{\}}
+\DoxyCodeLine{73     \mbox{\hyperlink{class_plane}{Plane}}(\textcolor{keywordtype}{double} x): type(0), max\_health(100), cur\_health(100), speed(5), gun\_count(1), x(x), y(x), r(100) \{\}}
+\DoxyCodeLine{74     \textcolor{keyword}{virtual} \mbox{\hyperlink{class_plane}{\string~Plane}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{75     \textcolor{keywordtype}{double} get\_attack\_r() \textcolor{keyword}{const}; \textcolor{comment}{//получить радиус атаки}}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77     \textcolor{keywordtype}{void} get\_gun\_damage(\textcolor{keyword}{const} \textcolor{keywordtype}{int}\& dmg, \textcolor{keyword}{const} \textcolor{keywordtype}{int}\& p, \textcolor{keyword}{const} \textcolor{keywordtype}{int}\& rof, \textcolor{keyword}{const} \textcolor{keywordtype}{int}\& gun\_count, \textcolor{keyword}{const} \textcolor{keywordtype}{double}\& plane\_reduce\_hit) \textcolor{keyword}{noexcept}; \textcolor{comment}{//получить урон от пушки}}
+\DoxyCodeLine{78     \textcolor{keywordtype}{void} get\_rocket\_damage(\textcolor{keyword}{const} \textcolor{keywordtype}{int}\& dmg, \textcolor{keyword}{const} \textcolor{keywordtype}{int}\& rof, \textcolor{keywordtype}{int} r\_count, \textcolor{keyword}{const} \textcolor{keywordtype}{int}\& REB\_p) \textcolor{keyword}{noexcept}; \textcolor{comment}{//получить урон от ракеты}}
+\DoxyCodeLine{79     \textcolor{keywordtype}{void} gun\_shoot(\mbox{\hyperlink{class_plane}{Plane}} \&plane, \textcolor{keyword}{const} \textcolor{keywordtype}{int}\& REB\_p) \textcolor{keyword}{noexcept}; \textcolor{comment}{//выстрелить из пушки}}
+\DoxyCodeLine{80     \textcolor{keywordtype}{void} rocket\_shoot(\mbox{\hyperlink{class_plane}{Plane}} \&plane, \textcolor{keyword}{const} \textcolor{keywordtype}{int}\& REB\_p) \textcolor{keyword}{noexcept}; \textcolor{comment}{//выстрелить ракетой}}
+\DoxyCodeLine{81     \textcolor{keywordtype}{int} get\_type()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} type;\}}
+\DoxyCodeLine{82     \textcolor{keywordtype}{int} get\_max\_health()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} max\_health;\}}
+\DoxyCodeLine{83     \textcolor{keywordtype}{int} get\_cur\_health()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} cur\_health;\}}
+\DoxyCodeLine{84     \textcolor{keywordtype}{double} get\_speed()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} speed;\}}
+\DoxyCodeLine{85     \textcolor{keywordtype}{int} get\_gun\_count()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} gun\_count;\}}
+\DoxyCodeLine{86     \mbox{\hyperlink{class_rocket}{Rocket}} get\_rocket()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} rocket;\}}
+\DoxyCodeLine{87     \mbox{\hyperlink{class_gun}{Gun}} get\_gun()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} gun;\};}
+\DoxyCodeLine{88     \textcolor{keywordtype}{double} get\_x()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} x;\}}
+\DoxyCodeLine{89     \textcolor{keywordtype}{double} get\_y()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} y;\}}
+\DoxyCodeLine{90     \textcolor{keywordtype}{double} get\_r()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} r;\} \textcolor{comment}{//получить радиус обнаружения противником данного истребителя}}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92     \textcolor{keywordtype}{void} set\_type(\textcolor{keywordtype}{int} type) \textcolor{keyword}{noexcept} \{this-\/>type = type;\}}
+\DoxyCodeLine{93     \textcolor{keywordtype}{void} set\_max\_health(\textcolor{keywordtype}{int} max\_health) \textcolor{keyword}{noexcept} \{this-\/>max\_health = max\_health;\}}
+\DoxyCodeLine{94     \textcolor{keywordtype}{void} set\_cur\_health(\textcolor{keywordtype}{int} cur\_health) \textcolor{keyword}{noexcept} \{this-\/>cur\_health = cur\_health;\}}
+\DoxyCodeLine{95     \textcolor{keywordtype}{void} set\_speed(\textcolor{keywordtype}{double} speed) \textcolor{keyword}{noexcept} \{this-\/>speed = speed;\}}
+\DoxyCodeLine{96     \textcolor{keywordtype}{void} set\_gun\_count(\textcolor{keywordtype}{int} gun\_count) \textcolor{keyword}{noexcept} \{this-\/>gun\_count = gun\_count;\}}
+\DoxyCodeLine{97     \textcolor{keywordtype}{void} set\_rocket(\mbox{\hyperlink{class_rocket}{Rocket}} rocket) \textcolor{keyword}{noexcept} \{this-\/>rocket = rocket;\}}
+\DoxyCodeLine{98     \textcolor{keywordtype}{void} set\_gun(\mbox{\hyperlink{class_gun}{Gun}} gun) \textcolor{keyword}{noexcept} \{this-\/>gun = gun;\};}
+\DoxyCodeLine{99     \textcolor{keywordtype}{void} set\_x(\textcolor{keywordtype}{double} x) \textcolor{keyword}{noexcept} \{this-\/>x = x;\}}
+\DoxyCodeLine{100     \textcolor{keywordtype}{void} set\_y(\textcolor{keywordtype}{double} y) \textcolor{keyword}{noexcept} \{this-\/>y = y;\}}
+\DoxyCodeLine{101     \textcolor{keywordtype}{void} set\_r(\textcolor{keywordtype}{double} r) \textcolor{keyword}{noexcept} \{this-\/>r = r;\}}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103     \textcolor{keyword}{virtual} std::ostream\& print(std::ostream \&c)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{104         \textcolor{keywordflow}{return} c << \textcolor{stringliteral}{"{}In Plane, ("{}} << x << \textcolor{stringliteral}{"{},"{}}<< y << \textcolor{stringliteral}{"{}), health = "{}} << cur\_health << \textcolor{stringliteral}{"{}, find\_r = "{}}}
+\DoxyCodeLine{105         << get\_r() << \textcolor{stringliteral}{"{}, rocket\_count = "{}} << rocket.get\_cur\_count();}
+\DoxyCodeLine{106     \}}
+\DoxyCodeLine{107     \textcolor{keyword}{friend} std::ostream\& operator << (std::ostream \&c, \textcolor{keyword}{const} \mbox{\hyperlink{class_plane}{Plane}} \&p) \{}
+\DoxyCodeLine{108         \textcolor{keywordflow}{return} p.print(c);}
+\DoxyCodeLine{109     \}}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111     \textcolor{keyword}{virtual} \textcolor{keywordtype}{int} get\_cur\_pro\_count()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} 0;\}}
+\DoxyCodeLine{112     \textcolor{keyword}{virtual} \textcolor{keywordtype}{int} get\_max\_pro\_count()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} 0;\}}
+\DoxyCodeLine{113     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} set\_cur\_pro\_count(\textcolor{keywordtype}{int} count) \textcolor{keyword}{noexcept} \{\}}
+\DoxyCodeLine{114     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} set\_max\_pro\_count(\textcolor{keywordtype}{int} count) \textcolor{keyword}{noexcept} \{\}}
+\DoxyCodeLine{115     \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} get\_reduce\_hit()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} 1;\}}
+\DoxyCodeLine{116     \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} get\_reduce\_r()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} 1;\}}
+\DoxyCodeLine{117     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} set\_reduce\_hit(\textcolor{keywordtype}{double} rate) \textcolor{keyword}{noexcept} \{\}}
+\DoxyCodeLine{118     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} set\_reduce\_r(\textcolor{keywordtype}{double} rate) \textcolor{keyword}{noexcept} \{\}}
+\DoxyCodeLine{119     \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} get\_increase\_find\_r()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} 1;\}}
+\DoxyCodeLine{120     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} set\_increase\_find\_r(\textcolor{keywordtype}{double} rate) \textcolor{keyword}{noexcept} \{\}}
+\DoxyCodeLine{121     \textcolor{keyword}{virtual} \textcolor{keywordtype}{int} get\_REB\_p()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} 0;\}}
+\DoxyCodeLine{122     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} set\_REB\_p(\textcolor{keywordtype}{int} p) \textcolor{keyword}{noexcept} \{\}}
+\DoxyCodeLine{123 \};}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125 \textcolor{keyword}{class }\mbox{\hyperlink{class_p_r_o}{PRO}}: \textcolor{keyword}{public} \mbox{\hyperlink{class_plane}{Plane}} \{ \textcolor{comment}{//истребитель ПРО}}
+\DoxyCodeLine{126     \textcolor{keyword}{private}:}
+\DoxyCodeLine{127     \textcolor{keywordtype}{int} cur\_pro\_count; \textcolor{comment}{//количество зарядов ПРО (противоракетной обороны)}}
+\DoxyCodeLine{128     \textcolor{keywordtype}{int} max\_pro\_count; \textcolor{comment}{//максимальное количество зарядов ПРО}}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130     \textcolor{keyword}{public}:}
+\DoxyCodeLine{131     \mbox{\hyperlink{class_p_r_o}{PRO}}():\mbox{\hyperlink{class_plane}{Plane}}(), cur\_pro\_count(4), max\_pro\_count(4) \{type = 1;\}}
+\DoxyCodeLine{132     \mbox{\hyperlink{class_p_r_o}{PRO}}(\textcolor{keywordtype}{double} x, \textcolor{keywordtype}{double} y): \mbox{\hyperlink{class_plane}{Plane}}(x,y), cur\_pro\_count(4), max\_pro\_count(4) \{type = 1;\}}
+\DoxyCodeLine{133     \mbox{\hyperlink{class_p_r_o}{PRO}}(\textcolor{keywordtype}{double} x): \mbox{\hyperlink{class_plane}{Plane}}(x), cur\_pro\_count(4), max\_pro\_count(4) \{type = 1;\}}
+\DoxyCodeLine{134     \mbox{\hyperlink{class_p_r_o}{\string~PRO}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{135     \textcolor{keywordtype}{int} get\_cur\_pro\_count()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} cur\_pro\_count;\}}
+\DoxyCodeLine{136     \textcolor{keywordtype}{int} get\_max\_pro\_count()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} max\_pro\_count;\}}
+\DoxyCodeLine{137     \textcolor{keywordtype}{void} set\_cur\_pro\_count(\textcolor{keywordtype}{int} count) \textcolor{keyword}{noexcept} \{this-\/>cur\_pro\_count = count;\}}
+\DoxyCodeLine{138     \textcolor{keywordtype}{void} set\_max\_pro\_count(\textcolor{keywordtype}{int} count) \textcolor{keyword}{noexcept} \{this-\/>max\_pro\_count = count;\}}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140     std::ostream\& print(std::ostream \&c)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{141         \textcolor{keywordflow}{return} c << \textcolor{stringliteral}{"{}Type \(\backslash\)"{}PRO\(\backslash\)"{}, ("{}} << x << \textcolor{stringliteral}{"{},"{}}<< y << \textcolor{stringliteral}{"{}), health = "{}} << cur\_health << \textcolor{stringliteral}{"{}, find\_r = "{}}}
+\DoxyCodeLine{142                 << get\_r() << \textcolor{stringliteral}{"{}, rocket\_count = "{}} << rocket.get\_cur\_count() << \textcolor{stringliteral}{"{}, pro\_count = "{}} << get\_cur\_pro\_count();}
+\DoxyCodeLine{143     \}}
+\DoxyCodeLine{144     \textcolor{keyword}{friend} std::ostream\& operator << (std::ostream \&c, \textcolor{keyword}{const} \mbox{\hyperlink{class_p_r_o}{PRO}} \&p) \{}
+\DoxyCodeLine{145         \textcolor{keywordflow}{return} p.print(c);}
+\DoxyCodeLine{146     \}}
+\DoxyCodeLine{147 \};}
+\DoxyCodeLine{148 }
+\DoxyCodeLine{149 \textcolor{keyword}{class }\mbox{\hyperlink{class_mask}{Mask}}: \textcolor{keyword}{public} \mbox{\hyperlink{class_plane}{Plane}} \{ \textcolor{comment}{//истребитель маскировки}}
+\DoxyCodeLine{150     \textcolor{keyword}{private}:}
+\DoxyCodeLine{151     \textcolor{keywordtype}{double} reduce\_hit; \textcolor{comment}{//коэффициент уменьшения процента попаданий из пушки (<= 1)}}
+\DoxyCodeLine{152     \textcolor{keywordtype}{double} reduce\_r; \textcolor{comment}{//коэффициент уменьшения радиуса обнаружения (<= 1)}}
+\DoxyCodeLine{153 }
+\DoxyCodeLine{154     \textcolor{keyword}{public}:}
+\DoxyCodeLine{155     \mbox{\hyperlink{class_mask}{Mask}}(): \mbox{\hyperlink{class_plane}{Plane}}(), reduce\_hit(0.5), reduce\_r(0.5) \{type = 2;\}}
+\DoxyCodeLine{156     \mbox{\hyperlink{class_mask}{Mask}}(\textcolor{keywordtype}{double} x, \textcolor{keywordtype}{double} y): \mbox{\hyperlink{class_plane}{Plane}}(x,y), reduce\_hit(0.5), reduce\_r(0.5) \{type = 2;\}}
+\DoxyCodeLine{157     \mbox{\hyperlink{class_mask}{Mask}}(\textcolor{keywordtype}{double} x): \mbox{\hyperlink{class_plane}{Plane}}(x), reduce\_hit(0.5), reduce\_r(0.5) \{type = 2;\}}
+\DoxyCodeLine{158     \mbox{\hyperlink{class_mask}{\string~Mask}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{159 }
+\DoxyCodeLine{160     \textcolor{keywordtype}{double} get\_reduce\_hit()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} reduce\_hit;\}}
+\DoxyCodeLine{161     \textcolor{keywordtype}{double} get\_reduce\_r()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} reduce\_r;\}}
+\DoxyCodeLine{162     \textcolor{keywordtype}{void} set\_reduce\_hit(\textcolor{keywordtype}{double} rate) \textcolor{keyword}{noexcept} \{this-\/>reduce\_hit = rate;\}}
+\DoxyCodeLine{163     \textcolor{keywordtype}{void} set\_reduce\_r(\textcolor{keywordtype}{double} rate) \textcolor{keyword}{noexcept} \{this-\/>reduce\_r = rate;\}}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165     std::ostream\& print(std::ostream \&c)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{166         \textcolor{keywordflow}{return} c << \textcolor{stringliteral}{"{}Type \(\backslash\)"{}Mask\(\backslash\)"{}, ("{}} << x << \textcolor{stringliteral}{"{},"{}}<< y << \textcolor{stringliteral}{"{}), health = "{}} << cur\_health << \textcolor{stringliteral}{"{}, find\_r = "{}}}
+\DoxyCodeLine{167                  << get\_r() << \textcolor{stringliteral}{"{}, rocket\_count = "{}} << rocket.get\_cur\_count() << \textcolor{stringliteral}{"{}, reduce\_hit = "{}}}
+\DoxyCodeLine{168                  << get\_reduce\_hit() << \textcolor{stringliteral}{"{}, reduce\_r = "{}} << get\_reduce\_r();}
+\DoxyCodeLine{169     \}}
+\DoxyCodeLine{170     \textcolor{keyword}{friend} std::ostream\& operator << (std::ostream \&c, \textcolor{keyword}{const} \mbox{\hyperlink{class_mask}{Mask}} \&p) \{}
+\DoxyCodeLine{171         \textcolor{keywordflow}{return} p.print(c);}
+\DoxyCodeLine{172     \}}
+\DoxyCodeLine{173 \};}
+\DoxyCodeLine{174 }
+\DoxyCodeLine{175 \textcolor{keyword}{class }\mbox{\hyperlink{class_radio}{Radio}}: \textcolor{keyword}{public} \mbox{\hyperlink{class_plane}{Plane}} \{ \textcolor{comment}{//истребитель радиообнаружения}}
+\DoxyCodeLine{176     \textcolor{keyword}{private}:}
+\DoxyCodeLine{177     \textcolor{keywordtype}{double} increase\_find\_r; \textcolor{comment}{//коэффициент игнорирования маскировки (увеличения радиуса обнаружения) (> 1)}}
+\DoxyCodeLine{178 }
+\DoxyCodeLine{179     \textcolor{keyword}{public}:}
+\DoxyCodeLine{180     \mbox{\hyperlink{class_radio}{Radio}}(): \mbox{\hyperlink{class_plane}{Plane}}(), increase\_find\_r(2) \{type = 3;\}}
+\DoxyCodeLine{181     \mbox{\hyperlink{class_radio}{Radio}}(\textcolor{keywordtype}{double} x, \textcolor{keywordtype}{double} y): \mbox{\hyperlink{class_plane}{Plane}}(x,y), increase\_find\_r(2) \{type = 3;\}}
+\DoxyCodeLine{182     \mbox{\hyperlink{class_radio}{Radio}}(\textcolor{keywordtype}{double} x): \mbox{\hyperlink{class_plane}{Plane}}(x), increase\_find\_r(2) \{type = 3;\}}
+\DoxyCodeLine{183     \mbox{\hyperlink{class_radio}{\string~Radio}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{184     \textcolor{keywordtype}{double} get\_increase\_find\_r()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} increase\_find\_r;\}}
+\DoxyCodeLine{185     \textcolor{keywordtype}{void} set\_increase\_find\_r(\textcolor{keywordtype}{double} rate) \textcolor{keyword}{noexcept} \{this-\/>increase\_find\_r = rate;\}}
+\DoxyCodeLine{186 }
+\DoxyCodeLine{187     std::ostream\& print(std::ostream \&c)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{188         \textcolor{keywordflow}{return} c << \textcolor{stringliteral}{"{}Type \(\backslash\)"{}Radio\(\backslash\)"{}, ("{}} << x << \textcolor{stringliteral}{"{},"{}}<< y << \textcolor{stringliteral}{"{}), health = "{}} << cur\_health << \textcolor{stringliteral}{"{}, find\_r = "{}}}
+\DoxyCodeLine{189                  << get\_r() << \textcolor{stringliteral}{"{}, rocket\_count = "{}} << rocket.get\_cur\_count() << \textcolor{stringliteral}{"{}, increase\_r = "{}} << get\_increase\_find\_r();}
+\DoxyCodeLine{190     \}}
+\DoxyCodeLine{191     \textcolor{keyword}{friend} std::ostream\& operator << (std::ostream \&c, \textcolor{keyword}{const} \mbox{\hyperlink{class_radio}{Radio}} \&p) \{}
+\DoxyCodeLine{192         \textcolor{keywordflow}{return} p.print(c);}
+\DoxyCodeLine{193     \}}
+\DoxyCodeLine{194 \};}
+\DoxyCodeLine{195 }
+\DoxyCodeLine{196 \textcolor{keyword}{class }\mbox{\hyperlink{class_r_e_b}{REB}}: \textcolor{keyword}{public} \mbox{\hyperlink{class_plane}{Plane}} \{ \textcolor{comment}{//истребитель РЭБ (радиоэлектронной борьбы)}}
+\DoxyCodeLine{197     \textcolor{keyword}{private}:}
+\DoxyCodeLine{198     \textcolor{keywordtype}{int} REB\_p; \textcolor{comment}{//процент(вероятность) подавления ПРО, маскировки, радиообнаружения (<= 100)}}
+\DoxyCodeLine{199 }
+\DoxyCodeLine{200     \textcolor{keyword}{public}:}
+\DoxyCodeLine{201     \mbox{\hyperlink{class_r_e_b}{REB}}(): \mbox{\hyperlink{class_plane}{Plane}}(), REB\_p(40) \{type = 4;\}}
+\DoxyCodeLine{202     \mbox{\hyperlink{class_r_e_b}{REB}}(\textcolor{keywordtype}{double} x, \textcolor{keywordtype}{double} y): \mbox{\hyperlink{class_plane}{Plane}}(x,y), REB\_p(40) \{type = 4;\}}
+\DoxyCodeLine{203     \mbox{\hyperlink{class_r_e_b}{REB}}(\textcolor{keywordtype}{double} x): \mbox{\hyperlink{class_plane}{Plane}}(x), REB\_p(40) \{type = 4;\}}
+\DoxyCodeLine{204     \mbox{\hyperlink{class_r_e_b}{\string~REB}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{205 }
+\DoxyCodeLine{206     \textcolor{keywordtype}{int} get\_REB\_p()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} REB\_p;\}}
+\DoxyCodeLine{207     \textcolor{keywordtype}{void} set\_REB\_p(\textcolor{keywordtype}{int} p) \textcolor{keyword}{noexcept} \{this-\/>REB\_p = p;\}}
+\DoxyCodeLine{208 }
+\DoxyCodeLine{209     std::ostream\& print(std::ostream \&c)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{210         \textcolor{keywordflow}{return} c << \textcolor{stringliteral}{"{}Type \(\backslash\)"{}REB\(\backslash\)"{}, ("{}} << x << \textcolor{stringliteral}{"{},"{}}<< y << \textcolor{stringliteral}{"{}), health = "{}} << cur\_health << \textcolor{stringliteral}{"{}, find\_r = "{}}}
+\DoxyCodeLine{211                  << get\_r() << \textcolor{stringliteral}{"{}, rocket\_count = "{}} << rocket.get\_cur\_count() << \textcolor{stringliteral}{"{}, REB\_p = "{}} << get\_REB\_p();}
+\DoxyCodeLine{212     \}}
+\DoxyCodeLine{213     \textcolor{keyword}{friend} std::ostream\& operator << (std::ostream \&c, \textcolor{keyword}{const} \mbox{\hyperlink{class_r_e_b}{REB}} \&p) \{}
+\DoxyCodeLine{214         \textcolor{keywordflow}{return} p.print(c);}
+\DoxyCodeLine{215     \}}
+\DoxyCodeLine{216 \};}
+\DoxyCodeLine{217 }
+\DoxyCodeLine{218 \textcolor{keyword}{class }\mbox{\hyperlink{class_scout}{Scout}}: \textcolor{keyword}{public} \mbox{\hyperlink{class_plane}{Plane}} \{ \textcolor{comment}{//истребитель разведки}}
+\DoxyCodeLine{219     \textcolor{keyword}{private}:}
+\DoxyCodeLine{220     \textcolor{keywordtype}{double} reduce\_r; \textcolor{comment}{//коэффициент уменьшения собственного радиуса обнаружения (< 1)}}
+\DoxyCodeLine{221     \textcolor{keywordtype}{double} increase\_enemy\_find\_r; \textcolor{comment}{//коэффициент увеличения радиуса обнаружения вражеской техники (> 1)}}
+\DoxyCodeLine{222 }
+\DoxyCodeLine{223     \textcolor{keyword}{public}:}
+\DoxyCodeLine{224     \mbox{\hyperlink{class_scout}{Scout}}(): \mbox{\hyperlink{class_plane}{Plane}}(), reduce\_r(0.5), increase\_enemy\_find\_r(2) \{type = 5;\}}
+\DoxyCodeLine{225     \mbox{\hyperlink{class_scout}{Scout}}(\textcolor{keywordtype}{double} x, \textcolor{keywordtype}{double} y): \mbox{\hyperlink{class_plane}{Plane}}(x,y), reduce\_r(0.5), increase\_enemy\_find\_r(2) \{type = 5;\}}
+\DoxyCodeLine{226     \mbox{\hyperlink{class_scout}{Scout}}(\textcolor{keywordtype}{double} x): \mbox{\hyperlink{class_plane}{Plane}}(x), reduce\_r(0.5), increase\_enemy\_find\_r(2) \{type = 5;\}}
+\DoxyCodeLine{227     \mbox{\hyperlink{class_scout}{\string~Scout}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{228 }
+\DoxyCodeLine{229     \textcolor{keywordtype}{double} get\_reduce\_r()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} reduce\_r;\}}
+\DoxyCodeLine{230     \textcolor{keywordtype}{double} get\_increase\_find\_r()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} increase\_enemy\_find\_r;\}}
+\DoxyCodeLine{231     \textcolor{keywordtype}{void} set\_reduce\_r(\textcolor{keywordtype}{double} rate) \textcolor{keyword}{noexcept} \{this-\/>reduce\_r = rate;\}}
+\DoxyCodeLine{232     \textcolor{keywordtype}{void} set\_increase\_find\_r(\textcolor{keywordtype}{double} rate) \textcolor{keyword}{noexcept} \{this-\/>increase\_enemy\_find\_r = rate;\}}
+\DoxyCodeLine{233 }
+\DoxyCodeLine{234     std::ostream\& print(std::ostream \&c)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{235         \textcolor{keywordflow}{return} c << \textcolor{stringliteral}{"{}Type \(\backslash\)"{}Scout\(\backslash\)"{}, ("{}} << x << \textcolor{stringliteral}{"{},"{}}<< y << \textcolor{stringliteral}{"{}), health = "{}} << cur\_health << \textcolor{stringliteral}{"{}, find\_r = "{}}}
+\DoxyCodeLine{236                  << get\_r() << \textcolor{stringliteral}{"{}, rocket\_count = "{}} << rocket.get\_cur\_count() << \textcolor{stringliteral}{"{}, reduce\_r = "{}}}
+\DoxyCodeLine{237                  << get\_reduce\_r() << \textcolor{stringliteral}{"{}, increase\_r = "{}} << get\_increase\_find\_r();}
+\DoxyCodeLine{238     \}}
+\DoxyCodeLine{239     \textcolor{keyword}{friend} std::ostream\& operator << (std::ostream \&c, \textcolor{keyword}{const} \mbox{\hyperlink{class_scout}{Scout}} \&p) \{}
+\DoxyCodeLine{240         \textcolor{keywordflow}{return} p.print(c);}
+\DoxyCodeLine{241     \}}
+\DoxyCodeLine{242 \};}
+\DoxyCodeLine{243 }
+\DoxyCodeLine{244 }
+\DoxyCodeLine{246 \textcolor{keyword}{class }\mbox{\hyperlink{class_link}{Link}} \{ \textcolor{comment}{//звено истребителей}}
+\DoxyCodeLine{247     \textcolor{keyword}{private}:}
+\DoxyCodeLine{248     \mbox{\hyperlink{class_plane}{Plane}} **plane;}
+\DoxyCodeLine{249     \textcolor{keywordtype}{int} plane\_count; \textcolor{comment}{//количество истребителей в звене (<= 4)}}
+\DoxyCodeLine{250     \textcolor{keywordtype}{int} command; \textcolor{comment}{//текущий приказ //0 -\/ сохранять позицию //1 -\/ перемещаться в точку //2 -\/ атака}}
+\DoxyCodeLine{251     \textcolor{keywordtype}{double} x, y; \textcolor{comment}{//координаты звена}}
+\DoxyCodeLine{252 }
+\DoxyCodeLine{253     \textcolor{keyword}{public}:}
+\DoxyCodeLine{254     \mbox{\hyperlink{class_link}{Link}}(): plane\_count(0), plane(\textcolor{keyword}{nullptr}), command(0), x(0), y(0) \{\}}
+\DoxyCodeLine{262     \mbox{\hyperlink{class_link}{Link}}(\mbox{\hyperlink{class_plane}{Plane}} **p, \textcolor{keyword}{const} \textcolor{keywordtype}{int}\& count);}
+\DoxyCodeLine{267     \mbox{\hyperlink{class_link}{Link}}(\textcolor{keyword}{const} \mbox{\hyperlink{class_link}{Link}} \&l);}
+\DoxyCodeLine{273     \mbox{\hyperlink{class_link}{Link}}\& \mbox{\hyperlink{class_link_aad3014dd02a15e0c2c53df3f35bd0847}{operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{class_link}{Link}} \&l);}
+\DoxyCodeLine{274     \mbox{\hyperlink{class_link}{\string~Link}}() \{}
+\DoxyCodeLine{275         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < plane\_count; i++) \{}
+\DoxyCodeLine{276             \textcolor{keyword}{delete} plane[i];}
+\DoxyCodeLine{277             plane[i] = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{278         \}}
+\DoxyCodeLine{279         plane\_count = 0;}
+\DoxyCodeLine{280         \textcolor{keyword}{delete} [] plane;}
+\DoxyCodeLine{281         plane = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{282     \}}
+\DoxyCodeLine{283 }
+\DoxyCodeLine{289     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_link_a308d8dd5b56614f426abd00b9f94d914}{insert\_plane}}(\textcolor{keyword}{const} \mbox{\hyperlink{class_plane}{Plane}}\& p);}
+\DoxyCodeLine{295     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_link_a5f89df43c07dc254bd66aa5972d1ea14}{delete\_plane}}(\textcolor{keyword}{const} \textcolor{keywordtype}{int}\& num);}
+\DoxyCodeLine{301     \textcolor{keywordtype}{double} \mbox{\hyperlink{class_link_a52b061adb48813fdd74e131906eb2db3}{get\_r}}() \textcolor{keyword}{const};   \textcolor{comment}{//максимальный радиус обнаружения среди истребителей звена}}
+\DoxyCodeLine{307 \textcolor{comment}{}    \textcolor{keywordtype}{int} \mbox{\hyperlink{class_link_a833b82f0e2524c4c62c6786131052ee9}{get\_REB\_p}}() \textcolor{keyword}{const};  \textcolor{comment}{//максимальный процент радиоэлектронной борьбы среди истребителей звена}}
+\DoxyCodeLine{313 \textcolor{comment}{}    \textcolor{keywordtype}{double} \mbox{\hyperlink{class_link_a5081f20259b1de3992ead52d0c430062}{get\_reduce\_r}}() \textcolor{keyword}{const};  \textcolor{comment}{//минимальный коэффициент уменьшения собственного радиуса обнаружения среди истребителей звена}}
+\DoxyCodeLine{319 \textcolor{comment}{}    \textcolor{keywordtype}{double} \mbox{\hyperlink{class_link_a1e4c1a23134007ba5026c912aaa2c108}{get\_increase\_r}}() \textcolor{keyword}{const};  \textcolor{comment}{//максимальный коэффициент увеличения радиуса обнаружения противников среди истребителей звена}}
+\DoxyCodeLine{326 \textcolor{comment}{}    \textcolor{keywordtype}{double} \mbox{\hyperlink{class_link_ae442495745e19e6cb98da253a3eada5e}{get\_enemy\_find\_r}}(\textcolor{keyword}{const} \mbox{\hyperlink{class_link}{Link}}\& enemy\_link) \textcolor{keyword}{const};  \textcolor{comment}{//радиус обнаружения звеном звена противника}}
+\DoxyCodeLine{333 \textcolor{comment}{}    \mbox{\hyperlink{class_plane}{Plane}}* \mbox{\hyperlink{class_link_a8741078833ab9e58bfba71e1257c8f30}{get\_plane}}(\textcolor{keyword}{const} \textcolor{keywordtype}{int}\& num) \{}
+\DoxyCodeLine{334         \textcolor{keywordflow}{if} (num < 1 || num > 4) \textcolor{keywordflow}{throw} std::logic\_error(\textcolor{stringliteral}{"{}Invalid index"{}});}
+\DoxyCodeLine{335         \textcolor{keywordflow}{if} (plane\_count <= 0 || !plane) \textcolor{keywordflow}{throw} std::logic\_error(\textcolor{stringliteral}{"{}Link is empty"{}});}
+\DoxyCodeLine{336         \textcolor{keywordflow}{if} (num > plane\_count) \textcolor{keywordflow}{throw} std::logic\_error(\textcolor{stringliteral}{"{}Count of planes is less than entered number"{}});}
+\DoxyCodeLine{337         \textcolor{keywordflow}{return} plane[num-\/1];}
+\DoxyCodeLine{338     \}}
+\DoxyCodeLine{343     \textcolor{keywordtype}{int} \mbox{\hyperlink{class_link_a0a6aac3899dd21ea84f0efabde551368}{get\_plane\_count}}()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} plane\_count;\}}
+\DoxyCodeLine{348     \textcolor{keywordtype}{double} \mbox{\hyperlink{class_link_ac013ca42ba4fc3ddc953c1b6fd2eb920}{get\_x}}()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} x;\}}
+\DoxyCodeLine{353     \textcolor{keywordtype}{double} \mbox{\hyperlink{class_link_ae31ec59ed48a6be2b1bf7eb4174d17ac}{get\_y}}()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} y;\}}
+\DoxyCodeLine{358     \textcolor{keywordtype}{int} \mbox{\hyperlink{class_link_afa8ee93f689db0d3565c855844c22808}{get\_command}}()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} command;\}}
+\DoxyCodeLine{363     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_link_a38e1ba72cd20b47575636142858e6336}{set\_x}}(\textcolor{keywordtype}{double} x) \textcolor{keyword}{noexcept} \{this-\/>x = x;\}}
+\DoxyCodeLine{368     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_link_a1f4b8f54e976fa65abf9838d4a44c0d0}{set\_y}}(\textcolor{keywordtype}{double} y) \textcolor{keyword}{noexcept} \{this-\/>y = y;\}}
+\DoxyCodeLine{373     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_link_a0d00b02665d4658f43313996bc8f8ed2}{set\_command}}(\textcolor{keywordtype}{int} c) \textcolor{keyword}{noexcept} \{this-\/>command = c;\}}
+\DoxyCodeLine{380     \textcolor{keyword}{friend} std::ostream\& \mbox{\hyperlink{class_link_a8200ee8cccd59f1dc340a80c18df02ad}{operator << }}(std::ostream \&c, \textcolor{keyword}{const} \mbox{\hyperlink{class_link}{Link}} \&link) \textcolor{keyword}{noexcept} \{}
+\DoxyCodeLine{381         \textcolor{keywordflow}{if} (link.plane\_count <= 0 || !link.plane) \textcolor{keywordflow}{return} c << \textcolor{stringliteral}{"{}Link is empty\(\backslash\)n"{}};}
+\DoxyCodeLine{382         c << \textcolor{stringliteral}{"{}Link description: r = "{}}<< link.get\_r() << \textcolor{stringliteral}{"{}, REB\_p = "{}} << link.get\_REB\_p()}
+\DoxyCodeLine{383           << \textcolor{stringliteral}{"{}, reduce\_r = "{}} << link.get\_reduce\_r() << \textcolor{stringliteral}{"{}, increase\_r = "{}} << link.get\_increase\_r() << \textcolor{charliteral}{'\(\backslash\)n'};}
+\DoxyCodeLine{384         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < link.plane\_count; i++) \{}
+\DoxyCodeLine{385             c << \textcolor{stringliteral}{"{}Plane \#"{}} << i+1 << \textcolor{stringliteral}{"{}: "{}} << *link.plane[i] << \textcolor{charliteral}{'\(\backslash\)n'};}
+\DoxyCodeLine{386         \}}
+\DoxyCodeLine{387         \textcolor{keywordflow}{return} c;}
+\DoxyCodeLine{388     \}}
+\DoxyCodeLine{389 \};}
+\DoxyCodeLine{390 }
+\DoxyCodeLine{391 \textcolor{keyword}{struct }\mbox{\hyperlink{struct_item}{Item}} \{}
+\DoxyCodeLine{392     \textcolor{keywordtype}{int} id;}
+\DoxyCodeLine{393     \mbox{\hyperlink{class_link}{Link}} link;}
+\DoxyCodeLine{394     \mbox{\hyperlink{struct_item}{Item}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{395     \mbox{\hyperlink{struct_item}{Item}}(\textcolor{keyword}{const} \textcolor{keywordtype}{int}\& i, \textcolor{keyword}{const} \mbox{\hyperlink{class_link}{Link}}\& l): id(i), link(l) \{\}}
+\DoxyCodeLine{396     \mbox{\hyperlink{struct_item}{Item}}(\textcolor{keyword}{const} \mbox{\hyperlink{struct_item}{Item}}\& item): id(item.id), link(item.link) \{\}}
+\DoxyCodeLine{397 \};}
+\DoxyCodeLine{398 }
+\DoxyCodeLine{399 \textcolor{keyword}{typedef} \mbox{\hyperlink{class_iterator}{Iterator<Item>}} \mbox{\hyperlink{class_iterator}{It}};}
+\DoxyCodeLine{400 \textcolor{keyword}{typedef} \mbox{\hyperlink{class_const___iterator}{Const\_Iterator<Item>}} \mbox{\hyperlink{class_const___iterator}{Const\_It}};}
+\DoxyCodeLine{401 \textcolor{comment}{//typedef std::vector<Item>::iterator It;}}
+\DoxyCodeLine{402 \textcolor{comment}{//typedef std::vector<Item>::const\_iterator Const\_It;}}
+\DoxyCodeLine{403 \textcolor{keyword}{class }\mbox{\hyperlink{class_table}{Table}} \{}
+\DoxyCodeLine{404     \textcolor{keyword}{private}:}
+\DoxyCodeLine{405     \textcolor{comment}{//std::vector<Item> vec;}}
+\DoxyCodeLine{406     \mbox{\hyperlink{classvector}{vector<Item>}} vec;}
+\DoxyCodeLine{407     \textcolor{keyword}{public}:}
+\DoxyCodeLine{408     \mbox{\hyperlink{class_table}{Table}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{409     \mbox{\hyperlink{class_table}{Table}}(\textcolor{keyword}{const} \mbox{\hyperlink{class_table}{Table}} \&t): vec(t.vec) \{\}}
+\DoxyCodeLine{410     \textcolor{comment}{//Table(const std::vector<Item> \&v): vec(v) \{\}}}
+\DoxyCodeLine{411     \mbox{\hyperlink{class_table}{Table}}(\textcolor{keyword}{const} \mbox{\hyperlink{classvector}{vector<Item>}} \&v): vec(v) \{\}}
+\DoxyCodeLine{412     \mbox{\hyperlink{class_table}{\string~Table}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{413     \mbox{\hyperlink{class_iterator}{It}} find(\textcolor{keyword}{const} \textcolor{keywordtype}{int}\& \textcolor{keywordtype}{id});}
+\DoxyCodeLine{414     \mbox{\hyperlink{class_const___iterator}{Const\_It}} get\_end()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} vec.end();\}}
+\DoxyCodeLine{415     \mbox{\hyperlink{class_link}{Link}}\& get\_Link(\textcolor{keyword}{const} \textcolor{keywordtype}{int}\& \textcolor{keywordtype}{id});}
+\DoxyCodeLine{416     \textcolor{keywordtype}{int} get\_Link\_count() \textcolor{keyword}{const};}
+\DoxyCodeLine{417     \textcolor{keywordtype}{void} insert\_Link(\textcolor{keyword}{const} \mbox{\hyperlink{struct_item}{Item}} \&item);}
+\DoxyCodeLine{418     \textcolor{keywordtype}{void} delete\_Link(\textcolor{keyword}{const} \textcolor{keywordtype}{int}\& \textcolor{keywordtype}{id});}
+\DoxyCodeLine{419     \textcolor{keyword}{friend} std::ostream\& operator << (std::ostream \&c, \mbox{\hyperlink{class_table}{Table}} \&t) \textcolor{keyword}{noexcept} \{}
+\DoxyCodeLine{420         \textcolor{keywordflow}{if} (t.vec.begin() == t.vec.end()) \{}
+\DoxyCodeLine{421             c << \textcolor{stringliteral}{"{}Table is empty\(\backslash\)n"{}};}
+\DoxyCodeLine{422             \textcolor{keywordflow}{return} c;}
+\DoxyCodeLine{423         \}}
+\DoxyCodeLine{424         \textcolor{keywordflow}{for} (\mbox{\hyperlink{class_iterator}{It}} it = t.vec.begin(); it != t.vec.end(); it++) \{}
+\DoxyCodeLine{425             c << \textcolor{stringliteral}{"{}ID: "{}} << it-\/>id << std::endl;}
+\DoxyCodeLine{426             c << it-\/>link;}
+\DoxyCodeLine{427         \}}
+\DoxyCodeLine{428         \textcolor{keywordflow}{return} c;}
+\DoxyCodeLine{429     \}}
+\DoxyCodeLine{430 \};}
+\DoxyCodeLine{431 }
+\DoxyCodeLine{432 \textcolor{keyword}{class }\mbox{\hyperlink{class_mission}{Mission}} \{}
+\DoxyCodeLine{433     \textcolor{keyword}{private}:}
+\DoxyCodeLine{434     \mbox{\hyperlink{class_table}{Table}} t;}
+\DoxyCodeLine{435     \mbox{\hyperlink{class_table}{Table}} enemy\_t;}
+\DoxyCodeLine{436     \textcolor{keyword}{public}:}
+\DoxyCodeLine{437     \mbox{\hyperlink{class_mission}{Mission}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{438     \mbox{\hyperlink{class_mission}{\string~Mission}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{439 }
+\DoxyCodeLine{440     \mbox{\hyperlink{class_plane}{Plane}}* get\_plane\_t(\textcolor{keyword}{const} \textcolor{keywordtype}{int}\& \textcolor{keywordtype}{id}, \textcolor{keyword}{const} \textcolor{keywordtype}{int}\& num) \{}
+\DoxyCodeLine{441         \mbox{\hyperlink{class_plane}{Plane}} *p = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{442         \textcolor{keywordflow}{try} \{}
+\DoxyCodeLine{443             p = t.get\_Link(\textcolor{keywordtype}{id}).\mbox{\hyperlink{class_link_a8741078833ab9e58bfba71e1257c8f30}{get\_plane}}(num);}
+\DoxyCodeLine{444         \} \textcolor{keywordflow}{catch} (std::logic\_error \&e) \{}
+\DoxyCodeLine{445             std::cerr << e.what() << std::endl;}
+\DoxyCodeLine{446         \}}
+\DoxyCodeLine{447         \textcolor{keywordflow}{return} p;}
+\DoxyCodeLine{448     \}}
+\DoxyCodeLine{449 }
+\DoxyCodeLine{450     \mbox{\hyperlink{class_plane}{Plane}}* get\_plane\_enemy\_t(\textcolor{keyword}{const} \textcolor{keywordtype}{int}\& \textcolor{keywordtype}{id}, \textcolor{keyword}{const} \textcolor{keywordtype}{int}\& num) \{}
+\DoxyCodeLine{451         \mbox{\hyperlink{class_plane}{Plane}} *p = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{452         \textcolor{keywordflow}{try} \{}
+\DoxyCodeLine{453             p = enemy\_t.get\_Link(\textcolor{keywordtype}{id}).\mbox{\hyperlink{class_link_a8741078833ab9e58bfba71e1257c8f30}{get\_plane}}(num);}
+\DoxyCodeLine{454         \} \textcolor{keywordflow}{catch} (std::logic\_error \&e) \{}
+\DoxyCodeLine{455             std::cerr << e.what() << std::endl;}
+\DoxyCodeLine{456         \}}
+\DoxyCodeLine{457         \textcolor{keywordflow}{return} p;}
+\DoxyCodeLine{458     \}}
+\DoxyCodeLine{459 }
+\DoxyCodeLine{460     \textcolor{keywordtype}{int} get\_Link\_count\_t()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} t.get\_Link\_count();\}}
+\DoxyCodeLine{461     \textcolor{keywordtype}{int} get\_Link\_count\_enemy\_t()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} enemy\_t.get\_Link\_count();\}}
+\DoxyCodeLine{462 }
+\DoxyCodeLine{463     \textcolor{keywordtype}{void} insert\_Link\_t(\mbox{\hyperlink{struct_item}{Item}} \&item) \{}
+\DoxyCodeLine{464         \textcolor{keywordflow}{try} \{}
+\DoxyCodeLine{465             t.insert\_Link(item);}
+\DoxyCodeLine{466         \} \textcolor{keywordflow}{catch} (std::logic\_error \&e) \{}
+\DoxyCodeLine{467             std::cerr << e.what() << std::endl;}
+\DoxyCodeLine{468         \}}
+\DoxyCodeLine{469     \}}
+\DoxyCodeLine{470     \textcolor{keywordtype}{void} insert\_Link\_enemy\_t(\mbox{\hyperlink{struct_item}{Item}} \&item) \{}
+\DoxyCodeLine{471         \textcolor{keywordflow}{try} \{}
+\DoxyCodeLine{472             enemy\_t.insert\_Link(item);}
+\DoxyCodeLine{473         \} \textcolor{keywordflow}{catch} (std::logic\_error \&e) \{}
+\DoxyCodeLine{474             std::cerr << e.what() << std::endl;}
+\DoxyCodeLine{475         \}}
+\DoxyCodeLine{476     \}}
+\DoxyCodeLine{477     \textcolor{keywordtype}{void} delete\_Link\_t(\textcolor{keyword}{const} \textcolor{keywordtype}{int}\& \textcolor{keywordtype}{id}) \{}
+\DoxyCodeLine{478         \textcolor{keywordflow}{try} \{}
+\DoxyCodeLine{479             t.delete\_Link(\textcolor{keywordtype}{id});}
+\DoxyCodeLine{480         \} \textcolor{keywordflow}{catch} (std::logic\_error \&e) \{}
+\DoxyCodeLine{481             std::cerr << e.what() << std::endl;}
+\DoxyCodeLine{482         \}}
+\DoxyCodeLine{483     \}}
+\DoxyCodeLine{484     \textcolor{keywordtype}{void} delete\_Link\_enemy\_t(\textcolor{keyword}{const} \textcolor{keywordtype}{int}\& \textcolor{keywordtype}{id}) \{}
+\DoxyCodeLine{485         \textcolor{keywordflow}{try} \{}
+\DoxyCodeLine{486             enemy\_t.delete\_Link(\textcolor{keywordtype}{id});}
+\DoxyCodeLine{487         \} \textcolor{keywordflow}{catch} (std::logic\_error \&e) \{}
+\DoxyCodeLine{488             std::cerr << e.what() << std::endl;}
+\DoxyCodeLine{489         \}}
+\DoxyCodeLine{490     \}}
+\DoxyCodeLine{491     \textcolor{keywordtype}{void} insert\_plane\_t(\textcolor{keyword}{const} \textcolor{keywordtype}{int}\& \textcolor{keywordtype}{id}, \textcolor{keyword}{const} \mbox{\hyperlink{class_plane}{Plane}}\& p);}
+\DoxyCodeLine{492     \textcolor{keywordtype}{void} insert\_plane\_enemy\_t(\textcolor{keyword}{const} \textcolor{keywordtype}{int}\& \textcolor{keywordtype}{id}, \textcolor{keyword}{const} \mbox{\hyperlink{class_plane}{Plane}}\& p);}
+\DoxyCodeLine{493     \textcolor{keywordtype}{void} delete\_plane\_t(\textcolor{keyword}{const} \textcolor{keywordtype}{int}\& \textcolor{keywordtype}{id}, \textcolor{keyword}{const} \textcolor{keywordtype}{int}\& num);}
+\DoxyCodeLine{494     \textcolor{keywordtype}{void} delete\_plane\_enemy\_t(\textcolor{keyword}{const} \textcolor{keywordtype}{int}\& \textcolor{keywordtype}{id}, \textcolor{keyword}{const} \textcolor{keywordtype}{int}\& num);}
+\DoxyCodeLine{495 }
+\DoxyCodeLine{496     \textcolor{keywordtype}{void} gun\_shoot\_plane\_in\_enemy\_t(\textcolor{keyword}{const} \textcolor{keywordtype}{int}\& id1, \textcolor{keyword}{const} \textcolor{keywordtype}{int}\& num1, \textcolor{keyword}{const} \textcolor{keywordtype}{int}\& id2, \textcolor{keyword}{const} \textcolor{keywordtype}{int}\& num2);}
+\DoxyCodeLine{497     \textcolor{keywordtype}{void} gun\_shoot\_plane\_in\_t(\textcolor{keyword}{const} \textcolor{keywordtype}{int}\& id2, \textcolor{keyword}{const} \textcolor{keywordtype}{int}\& num2,\textcolor{keyword}{const} \textcolor{keywordtype}{int}\& id1, \textcolor{keyword}{const} \textcolor{keywordtype}{int}\& num1);}
+\DoxyCodeLine{498     \textcolor{keywordtype}{void} rocket\_shoot\_plane\_in\_enemy\_t(\textcolor{keyword}{const} \textcolor{keywordtype}{int}\& id1, \textcolor{keyword}{const} \textcolor{keywordtype}{int}\& num1, \textcolor{keyword}{const} \textcolor{keywordtype}{int}\& id2, \textcolor{keyword}{const} \textcolor{keywordtype}{int}\& num2);}
+\DoxyCodeLine{499     \textcolor{keywordtype}{void} rocket\_shoot\_plane\_in\_t(\textcolor{keyword}{const} \textcolor{keywordtype}{int}\& id2, \textcolor{keyword}{const} \textcolor{keywordtype}{int}\& num2,\textcolor{keyword}{const} \textcolor{keywordtype}{int}\& id1, \textcolor{keyword}{const} \textcolor{keywordtype}{int}\& num1);}
+\DoxyCodeLine{500 }
+\DoxyCodeLine{501     \textcolor{keyword}{friend} std::ostream\& operator << (std::ostream \&c, \mbox{\hyperlink{class_mission}{Mission}} \&m) \textcolor{keyword}{noexcept} \{}
+\DoxyCodeLine{502         c << \textcolor{stringliteral}{"{}\(\backslash\)n***Table***\(\backslash\)n"{}};}
+\DoxyCodeLine{503         c << m.t;}
+\DoxyCodeLine{504         c << \textcolor{stringliteral}{"{}***Enemy table***\(\backslash\)n"{}};}
+\DoxyCodeLine{505         c << m.enemy\_t;}
+\DoxyCodeLine{506         \textcolor{keywordflow}{return} c;}
+\DoxyCodeLine{507     \}}
+\DoxyCodeLine{508 \};}
+\DoxyCodeLine{509 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

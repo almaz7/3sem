@@ -6,57 +6,61 @@
 #include <vector>
 #include <stdexcept>
 #include <ctime>
-#include "my_vector.h"
+#include <SFML/Graphics.hpp>
 #define my_max(x,y) x > y ? x : y
 
 
 class Gun { //пушка
-    private:
+private:
     int dmg; //урон
     int p; //процент попаданий (<=100)
-    double dist; //дальность стрельбы
+    float dist; //дальность стрельбы
     int rof; //скорострельность пушки
 
-    public:
-    Gun():dmg(3), p(90), dist(10), rof(10){}
+public:
+    sf::Sprite s;
+    bool isMove;
+    Gun():dmg(3), p(90), dist(300.f), rof(10), isMove(false){}
     ~Gun() = default;
     int get_dmg() const {return dmg;}
     int get_p() const {return p;}
-    double get_dist() const {return dist;}
+    float get_dist() const {return dist;}
     int get_rof() const {return rof;}
 
     void set_dmg(int dmg) noexcept {this->dmg = dmg;}
     void set_p(int p) noexcept {this->p = p;}
-    void set_dist(double dist) noexcept {this->dist = dist;}
+    void set_dist(float dist) noexcept {this->dist = dist;}
     void set_rof(int rof) noexcept {this->rof = rof;}
 };
 
 class Rocket { //ракетная установка
-    private:
+private:
     int dmg; //урон
-    double dist; //дальность стрельбы
+    float dist; //дальность стрельбы
     int rof; //скорострельность ракетной установки
     int max_count; //максимальный боезапас
     int cur_count; //текущий боезапас
 
-    public:
-    Rocket():dmg(100), dist(50), rof(1), max_count(2), cur_count(2) {}
+public:
+    sf::Sprite s;
+    bool isMove;
+    Rocket():dmg(100), dist(1000.f), rof(1), max_count(2), cur_count(2), isMove(false) {}
     ~Rocket() = default;
     int get_dmg() const {return dmg;}
-    double get_dist() const {return dist;}
+    float get_dist() const {return dist;}
     int get_rof() const {return rof;}
     int get_cur_count() const {return cur_count;}
     int get_max_count() const {return max_count;}
 
     void set_dmg(int dmg) noexcept {this->dmg = dmg;}
-    void set_dist(double dist) noexcept {this->dist = dist;}
+    void set_dist(float dist) noexcept {this->dist = dist;}
     void set_rof(int rof) noexcept {this->rof = rof;}
     void set_cur_count(int count) noexcept {this->cur_count = count;}
     void set_max_count(int count) noexcept {this->max_count = count;}
 };
 
 class Plane {
-    protected:
+protected:
     int type; //модель истребителя
     int max_health; //маскимальная живучесть
     int cur_health; //текущая живучесть
@@ -64,45 +68,46 @@ class Plane {
     int gun_count; //количество пушек
     Rocket rocket;
     Gun gun;
-    double x, y; //текущие координаты
-    double r; //радиус обнаружения
+    float x, y; //текущие координаты
+    float r; //радиус обнаружения
 
-    public:
+public:
+
     Plane(): type(0), max_health(100), cur_health(100), speed(5), gun_count(1), x(0), y(0), r(100) {}
-    Plane(double x, double y): type(0), max_health(100), cur_health(100), speed(5), gun_count(1), x(x), y(y), r(100) {}
-    Plane(double x): type(0), max_health(100), cur_health(100), speed(5), gun_count(1), x(x), y(x), r(100) {}
+    Plane(float x, float y): type(0), max_health(100), cur_health(100), speed(5), gun_count(1), x(x), y(y), r(100) {}
+    Plane(float x): type(0), max_health(100), cur_health(100), speed(5), gun_count(1), x(x), y(x), r(100) {}
     virtual ~Plane() = default;
-    double get_attack_r() const; //получить радиус атаки
+    float get_attack_r() const; //получить радиус атаки
 
-    void get_gun_damage(const int& dmg, const int& p, const int& rof, const int& gun_count, const double& plane_reduce_hit) noexcept; //получить урон от пушки
+    void get_gun_damage(const int& dmg, const int& p, const int& rof, const int& gun_count, const float& plane_reduce_hit) noexcept; //получить урон от пушки
     void get_rocket_damage(const int& dmg, const int& rof, int r_count, const int& REB_p) noexcept; //получить урон от ракеты
     void gun_shoot(Plane &plane, const int& REB_p) noexcept; //выстрелить из пушки
     void rocket_shoot(Plane &plane, const int& REB_p) noexcept; //выстрелить ракетой
     int get_type() const {return type;}
     int get_max_health() const {return max_health;}
     int get_cur_health() const {return cur_health;}
-    double get_speed() const {return speed;}
+    float get_speed() const {return speed;}
     int get_gun_count() const {return gun_count;}
     Rocket get_rocket() const {return rocket;}
     Gun get_gun() const {return gun;};
-    double get_x() const {return x;}
-    double get_y() const {return y;}
-    double get_r() const {return r;} //получить радиус обнаружения противником данного истребителя
+    float get_x() const {return x;}
+    float get_y() const {return y;}
+    float get_r() const {return r;} //получить радиус обнаружения противником данного истребителя
 
     void set_type(int type) noexcept {this->type = type;}
     void set_max_health(int max_health) noexcept {this->max_health = max_health;}
     void set_cur_health(int cur_health) noexcept {this->cur_health = cur_health;}
-    void set_speed(double speed) noexcept {this->speed = speed;}
+    void set_speed(float speed) noexcept {this->speed = speed;}
     void set_gun_count(int gun_count) noexcept {this->gun_count = gun_count;}
     void set_rocket(Rocket rocket) noexcept {this->rocket = rocket;}
     void set_gun(Gun gun) noexcept {this->gun = gun;};
-    void set_x(double x) noexcept {this->x = x;}
-    void set_y(double y) noexcept {this->y = y;}
-    void set_r(double r) noexcept {this->r = r;}
+    void set_x(float x) noexcept {this->x = x;}
+    void set_y(float y) noexcept {this->y = y;}
+    void set_r(float r) noexcept {this->r = r;}
 
     virtual std::ostream& print(std::ostream &c) const {
         return c << "In Plane, (" << x << ","<< y << "), health = " << cur_health << ", find_r = "
-        << get_r() << ", rocket_count = " << rocket.get_cur_count();
+                 << get_r() << ", rocket_count = " << rocket.get_cur_count();
     }
     friend std::ostream& operator << (std::ostream &c, const Plane &p) {
         return p.print(c);
@@ -112,22 +117,22 @@ class Plane {
     virtual int get_max_pro_count() const {return 0;}
     virtual void set_cur_pro_count(int count) noexcept {}
     virtual void set_max_pro_count(int count) noexcept {}
-    virtual double get_reduce_hit() const {return 1;}
-    virtual double get_reduce_r() const {return 1;}
-    virtual void set_reduce_hit(double rate) noexcept {}
-    virtual void set_reduce_r(double rate) noexcept {}
-    virtual double get_increase_find_r() const {return 1;}
-    virtual void set_increase_find_r(double rate) noexcept {}
+    virtual float get_reduce_hit() const {return 1.f;}
+    virtual float get_reduce_r() const {return 1.f;}
+    virtual void set_reduce_hit(float rate) noexcept {}
+    virtual void set_reduce_r(float rate) noexcept {}
+    virtual float get_increase_find_r() const {return 1.f;}
+    virtual void set_increase_find_r(float rate) noexcept {}
     virtual int get_REB_p() const {return 0;}
     virtual void set_REB_p(int p) noexcept {}
 };
 
 class PRO: public Plane { //истребитель ПРО
-    private:
+private:
     int cur_pro_count; //количество зарядов ПРО (противоракетной обороны)
     int max_pro_count; //максимальное количество зарядов ПРО
 
-    public:
+public:
     PRO():Plane(), cur_pro_count(4), max_pro_count(4) {type = 1;}
     PRO(double x, double y): Plane(x,y), cur_pro_count(4), max_pro_count(4) {type = 1;}
     PRO(double x): Plane(x), cur_pro_count(4), max_pro_count(4) {type = 1;}
@@ -139,7 +144,7 @@ class PRO: public Plane { //истребитель ПРО
 
     std::ostream& print(std::ostream &c) const {
         return c << "Type \"PRO\", (" << x << ","<< y << "), health = " << cur_health << ", find_r = "
-                << get_r() << ", rocket_count = " << rocket.get_cur_count() << ", pro_count = " << get_cur_pro_count();
+                 << get_r() << ", rocket_count = " << rocket.get_cur_count() << ", pro_count = " << get_cur_pro_count();
     }
     friend std::ostream& operator << (std::ostream &c, const PRO &p) {
         return p.print(c);
@@ -147,20 +152,20 @@ class PRO: public Plane { //истребитель ПРО
 };
 
 class Mask: public Plane { //истребитель маскировки
-    private:
-    double reduce_hit; //коэффициент уменьшения процента попаданий из пушки (<= 1)
-    double reduce_r; //коэффициент уменьшения радиуса обнаружения (<= 1)
+private:
+    float reduce_hit; //коэффициент уменьшения процента попаданий из пушки (<= 1)
+    float reduce_r; //коэффициент уменьшения радиуса обнаружения (<= 1)
 
-    public:
-    Mask(): Plane(), reduce_hit(0.5), reduce_r(0.5) {type = 2;}
-    Mask(double x, double y): Plane(x,y), reduce_hit(0.5), reduce_r(0.5) {type = 2;}
-    Mask(double x): Plane(x), reduce_hit(0.5), reduce_r(0.5) {type = 2;}
+public:
+    Mask(): Plane(), reduce_hit(0.5f), reduce_r(0.5f) {type = 2;}
+    Mask(float x, float y): Plane(x,y), reduce_hit(0.5f), reduce_r(0.5f) {type = 2;}
+    Mask(float x): Plane(x), reduce_hit(0.5f), reduce_r(0.5f) {type = 2;}
     ~Mask() = default;
 
-    double get_reduce_hit() const {return reduce_hit;}
-    double get_reduce_r() const {return reduce_r;}
-    void set_reduce_hit(double rate) noexcept {this->reduce_hit = rate;}
-    void set_reduce_r(double rate) noexcept {this->reduce_r = rate;}
+    float get_reduce_hit() const {return reduce_hit;}
+    float get_reduce_r() const {return reduce_r;}
+    void set_reduce_hit(float rate) noexcept {this->reduce_hit = rate;}
+    void set_reduce_r(float rate) noexcept {this->reduce_r = rate;}
 
     std::ostream& print(std::ostream &c) const {
         return c << "Type \"Mask\", (" << x << ","<< y << "), health = " << cur_health << ", find_r = "
@@ -173,16 +178,16 @@ class Mask: public Plane { //истребитель маскировки
 };
 
 class Radio: public Plane { //истребитель радиообнаружения
-    private:
-    double increase_find_r; //коэффициент игнорирования маскировки (увеличения радиуса обнаружения) (> 1)
+private:
+    float increase_find_r; //коэффициент игнорирования маскировки (увеличения радиуса обнаружения) (> 1)
 
-    public:
-    Radio(): Plane(), increase_find_r(2) {type = 3;}
-    Radio(double x, double y): Plane(x,y), increase_find_r(2) {type = 3;}
-    Radio(double x): Plane(x), increase_find_r(2) {type = 3;}
+public:
+    Radio(): Plane(), increase_find_r(2.f) {type = 3;}
+    Radio(float x, float y): Plane(x,y), increase_find_r(2.f) {type = 3;}
+    Radio(float x): Plane(x), increase_find_r(2.f) {type = 3;}
     ~Radio() = default;
-    double get_increase_find_r() const {return increase_find_r;}
-    void set_increase_find_r(double rate) noexcept {this->increase_find_r = rate;}
+    float get_increase_find_r() const {return increase_find_r;}
+    void set_increase_find_r(float rate) noexcept {this->increase_find_r = rate;}
 
     std::ostream& print(std::ostream &c) const {
         return c << "Type \"Radio\", (" << x << ","<< y << "), health = " << cur_health << ", find_r = "
@@ -194,13 +199,13 @@ class Radio: public Plane { //истребитель радиообнаруже�
 };
 
 class REB: public Plane { //истребитель РЭБ (радиоэлектронной борьбы)
-    private:
+private:
     int REB_p; //процент(вероятность) подавления ПРО, маскировки, радиообнаружения (<= 100)
 
-    public:
+public:
     REB(): Plane(), REB_p(40) {type = 4;}
-    REB(double x, double y): Plane(x,y), REB_p(40) {type = 4;}
-    REB(double x): Plane(x), REB_p(40) {type = 4;}
+    REB(float x, float y): Plane(x,y), REB_p(40) {type = 4;}
+    REB(float x): Plane(x), REB_p(40) {type = 4;}
     ~REB() = default;
 
     int get_REB_p() const {return REB_p;}
@@ -216,20 +221,20 @@ class REB: public Plane { //истребитель РЭБ (радиоэлект�
 };
 
 class Scout: public Plane { //истребитель разведки
-    private:
-    double reduce_r; //коэффициент уменьшения собственного радиуса обнаружения (< 1)
-    double increase_enemy_find_r; //коэффициент увеличения радиуса обнаружения вражеской техники (> 1)
+private:
+    float reduce_r; //коэффициент уменьшения собственного радиуса обнаружения (< 1)
+    float increase_enemy_find_r; //коэффициент увеличения радиуса обнаружения вражеской техники (> 1)
 
-    public:
-    Scout(): Plane(), reduce_r(0.5), increase_enemy_find_r(2) {type = 5;}
-    Scout(double x, double y): Plane(x,y), reduce_r(0.5), increase_enemy_find_r(2) {type = 5;}
-    Scout(double x): Plane(x), reduce_r(0.5), increase_enemy_find_r(2) {type = 5;}
+public:
+    Scout(): Plane(), reduce_r(0.5f), increase_enemy_find_r(2.f) {type = 5;}
+    Scout(float x, float y): Plane(x,y), reduce_r(0.5f), increase_enemy_find_r(2.f) {type = 5;}
+    Scout(float x): Plane(x), reduce_r(0.5f), increase_enemy_find_r(2.f) {type = 5;}
     ~Scout() = default;
 
-    double get_reduce_r() const {return reduce_r;}
-    double get_increase_find_r() const {return increase_enemy_find_r;}
-    void set_reduce_r(double rate) noexcept {this->reduce_r = rate;}
-    void set_increase_find_r(double rate) noexcept {this->increase_enemy_find_r = rate;}
+    float get_reduce_r() const {return reduce_r;}
+    float get_increase_find_r() const {return increase_enemy_find_r;}
+    void set_reduce_r(float rate) noexcept {this->reduce_r = rate;}
+    void set_increase_find_r(float rate) noexcept {this->increase_enemy_find_r = rate;}
 
     std::ostream& print(std::ostream &c) const {
         return c << "Type \"Scout\", (" << x << ","<< y << "), health = " << cur_health << ", find_r = "
@@ -244,14 +249,17 @@ class Scout: public Plane { //истребитель разведки
 
 ///Класс Звена Истребителей
 class Link { //звено истребителей
-    private:
+private:
     Plane **plane;
     int plane_count; //количество истребителей в звене (<= 4)
     int command; //текущий приказ //0 - сохранять позицию //1 - перемещаться в точку //2 - атака
-    double x, y; //координаты звена
+    float x, y; //координаты звена
 
-    public:
-    Link(): plane_count(0), plane(nullptr), command(0), x(0), y(0) {}
+public:
+    sf::Sprite s;
+    bool isSelect;
+    bool isMove;
+    Link(): plane_count(0), plane(nullptr), command(0), x(0.f), y(0.f) {}
 /*!
  *  @brief конструктор для звена
  *  @param p указатель на массив указателей на самолеты; в случае пустого указателя будет выброшено
@@ -298,7 +306,7 @@ class Link { //звено истребителей
  *  @return double максимальный радиус обнаружения среди истребителей звена; в случае отсутствия в звене самолетов
  *  будет выброшено исключение типа std::logic_error
  */
-    double get_r() const;   //максимальный радиус обнаружения среди истребителей звена
+    float get_r() const;   //максимальный радиус обнаружения среди истребителей звена
 /*!
  *  @brief получение максимального процента радиоэлектронной борьбы среди истребителей звена
  *  @return int максимальный процент радиоэлектронной борьбы среди истребителей звена; в случае отсутствия в звене самолетов
@@ -310,20 +318,20 @@ class Link { //звено истребителей
  *  @return double минимальный коэффициент уменьшения собственного радиуса обнаружения среди истребителей звена; в случае отсутствия в звене самолетов
  *  будет выброшено исключение типа std::logic_error
  */
-    double get_reduce_r() const;  //минимальный коэффициент уменьшения собственного радиуса обнаружения среди истребителей звена
+    float get_reduce_r() const;  //минимальный коэффициент уменьшения собственного радиуса обнаружения среди истребителей звена
 /*!
  *  @brief получение максимального коэффициента увеличения радиуса обнаружения противников среди истребителей звена
  *  @return double максимальный коэффициент увеличения радиуса обнаружения противников среди истребителей звена; в случае отсутствия в звене самолетов
  *  будет выброшено исключение типа std::logic_error
  */
-    double get_increase_r() const;  //максимальный коэффициент увеличения радиуса обнаружения противников среди истребителей звена
+    float get_increase_r() const;  //максимальный коэффициент увеличения радиуса обнаружения противников среди истребителей звена
 /*!
  *  @brief получение радиуса обнаружения звеном звена противника
  *  @param enemy_link вражеское звено
  *  @return double радиус обнаружения звеном звена противника; в случае отсутствия в звене самолетов
  *  будет выброшено исключение типа std::logic_error
  */
-    double get_enemy_find_r(const Link& enemy_link) const;  //радиус обнаружения звеном звена противника
+    float get_enemy_find_r(const Link& enemy_link) const;  //радиус обнаружения звеном звена противника
 /*!
  *  @brief получение указателя на самолет в звене
  *  @param num порядковый номер самолета в звене; в случае невалидного номера или отсутствия в звене самолетов
@@ -345,12 +353,12 @@ class Link { //звено истребителей
  *  @brief получение координаты x звена
  *  @return double координата x
  */
-    double get_x() const {return x;}
+    float get_x() const {return x;}
 /*!
  *  @brief получение координаты y звена
  *  @return double координата y
  */
-    double get_y() const {return y;}
+    float get_y() const {return y;}
 /*!
  *  @brief получение текущей команды для звена
  *  @return int: "0" - сохранять позицию, "1" - перемещаться в точку, "2" - атака
@@ -396,19 +404,16 @@ struct Item {
     Item(const Item& item): id(item.id), link(item.link) {}
 };
 
-//typedef Iterator<Item> It;
-//typedef Const_Iterator<Item> Const_It;
+
 typedef std::vector<Item>::iterator It;
 typedef std::vector<Item>::const_iterator Const_It;
 class Table {
-    private:
+private:
     std::vector<Item> vec;
-    //vector<Item> vec;
-    public:
+public:
     Table() = default;
     Table(const Table &t): vec(t.vec) {}
     Table(const std::vector<Item> &v): vec(v) {}
-    //Table(const vector<Item> &v): vec(v) {}
     ~Table() = default;
     It find(const int& id);
     Const_It get_end() const {return vec.end();}
@@ -430,10 +435,10 @@ class Table {
 };
 
 class Mission {
-    private:
+private:
     Table t;
     Table enemy_t;
-    public:
+public:
     Mission() = default;
     ~Mission() = default;
 
