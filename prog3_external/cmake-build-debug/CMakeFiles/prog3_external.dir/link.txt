@@ -1,1 +1,0 @@
-/usr/bin/c++.exe -g -Wl,--enable-auto-import CMakeFiles/prog3_external.dir/main.cpp.o CMakeFiles/prog3_external.dir/external.cpp.o CMakeFiles/prog3_external.dir/table.cpp.o -o prog3_external.exe -Wl,--out-implib,libprog3_external.dll.a -Wl,--major-image-version,0,--minor-image-version,0 

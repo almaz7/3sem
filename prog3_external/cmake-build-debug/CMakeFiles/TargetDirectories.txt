@@ -1,3 +1,0 @@
-/cygdrive/c/Users/1/Desktop/3sem/3sem/prog3_external/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/cygdrive/c/Users/1/Desktop/3sem/3sem/prog3_external/cmake-build-debug/CMakeFiles/edit_cache.dir
-/cygdrive/c/Users/1/Desktop/3sem/3sem/prog3_external/cmake-build-debug/CMakeFiles/prog3_external.dir

@@ -1,4 +1,0 @@
-ToolSet: 3.2.0 (local)@D:\cygwin
-Options: 
-
-Options:
